@@ -8,7 +8,6 @@ $transBack: rgba(255, 255, 255, 0.1);
 
 html {
 	font-size: 20px;
-
 }
 
 body {
@@ -23,7 +22,7 @@ body {
 	overflow: clip;
 	display: flex;
 	flex-direction: column;
-	background: linear-gradient(100deg, #984D38 -60%, #181E41 65%, #984D38 1000%);
+	background: linear-gradient(100deg, #984D38 -30%, #181e41 65%, #181E41 80%, #984D38 500%);
 }
 
 [class*='__container'] {
@@ -320,6 +319,39 @@ body {
 	}
 }
 
+//--------------------------------------
+
+.markup {
+	&__container {}
+
+	&__cards {
+		display: flex;
+		gap: 15px;
+	}
+
+	&__card {
+		display: inline-block;
+		flex: 1 1 calc(33.33% - 10px);
+		padding: 26px;
+		background: rgba(255, 255, 255, 0.1);
+		box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
+		border-radius: 10px;
+	}
+}
+
+.card {
+	&__image-wrapper {
+		padding: 0 0 160% 0;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+
+	&__image {}
+
+	&__button {}
+
+}
+
 
 
 //---------------------------------------
@@ -329,3 +361,5 @@ body {
 
 	&__container {}
 }
+
+//-------------------------------------------
