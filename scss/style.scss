@@ -369,6 +369,29 @@ body {
 .markup {
 	&__container {}
 
+	&_preview {
+		height: 100vh;
+
+		.markup {
+			&__cards {
+				flex-direction: column;
+				width: 150px;
+				position: fixed;
+				top: 0;
+			}
+		}
+
+		.card {
+			flex: 0 0 236px;
+
+			&_current {
+				margin: 50px 0;
+				transform: scale(1.2);
+			}
+		}
+
+	}
+
 	&__cards {
 		display: flex;
 		gap: 15px;
@@ -376,12 +399,14 @@ body {
 	}
 
 	&__card {
+		display: block;
 		flex: 0 1 calc(33.33% - 10px);
 		padding: 2%;
 		/* 26/1300 */
 		background: $transBack;
 		box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
 		border-radius: 10px;
+		transition: flex-direction 1s;
 	}
 }
 
