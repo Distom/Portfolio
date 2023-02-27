@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Portfolio</title>
 	<link rel="stylesheet" href="css/style.css">
+	<script defer src="js/script.js"></script>
 </head>
 
 <body>
@@ -21,10 +22,10 @@
 				<nav class="header__menu">
 					<ul class="header__menu-list">
 						<li class="header__menu-item">
-							<a href="#" class="header__menu-link">Resume</a>
+							<a href="#" class="header__menu-link header__menu-link_selected" data-tab-name="resume">Resume</a>
 						</li>
 						<li class="header__menu-item">
-							<a href="#" class="header__menu-link">Markup</a>
+							<a href="#" class="header__menu-link" data-tab-name="markup">Markup</a>
 						</li>
 						<li class="header__menu-item">
 							<a href="#" class="header__menu-link">React</a>
@@ -37,7 +38,7 @@
 			</div>
 		</header>
 		<main class="main">
-			<section class="resume" hidden>
+			<section class="resume" data-tab-body="resume">
 				<div class="resume__container">
 					<div class="resume__photo-block photo-block">
 						<div class="photo-block__photo-wrapper _bgi">
@@ -182,7 +183,7 @@
 					</div>
 				</div>
 			</section>
-			<section class="markup">
+			<section class="markup" data-tab-body="markup" hidden>
 				<div class="markup__container">
 					<ul class="markup__cards">
 						<li class="markup__card card">
@@ -190,24 +191,50 @@
 								<img src="img/markup/growfy-screenshot.jpg" alt="growfy markup screenshot"
 									class="card__image  _bgi-image">
 							</div>
-							<button class="card__button">Preview</button>
-							<button class="card__button">Open</button>
+							<div class="card__buttons">
+								<button class="card__button">Preview</button>
+								<button class="card__button">Open</button>
+							</div>
 						</li>
 						<li class="markup__card card">
 							<div class="card__image-wrapper _bgi">
-								<img src="img/markup/growfy-screenshot.jpg" alt="growfy markup screenshot"
+								<img src="img/markup/real-estate-screenshot.jpg" alt="growfy markup screenshot"
 									class="card__image  _bgi-image">
 							</div>
-							<button class="card__button">Preview</button>
-							<button class="card__button">Open</button>
+							<div class="card__buttons">
+								<button class="card__button">Preview</button>
+								<button class="card__button">Open</button>
+							</div>
 						</li>
 						<li class="markup__card card">
 							<div class="card__image-wrapper _bgi">
-								<img src="img/markup/growfy-screenshot.jpg" alt="growfy markup screenshot"
+								<img src="img/markup/rhythm-screenshot.jpg" alt="growfy markup screenshot"
 									class="card__image  _bgi-image">
 							</div>
-							<button class="card__button">Preview</button>
-							<button class="card__button">Open</button>
+							<div class="card__buttons">
+								<button class="card__button">Preview</button>
+								<button class="card__button">Open</button>
+							</div>
+						</li>
+						<li class="markup__card card">
+							<div class="card__image-wrapper _bgi">
+								<img src="img/markup/relvise-screenshot.jpg" alt="growfy markup screenshot"
+									class="card__image  _bgi-image">
+							</div>
+							<div class="card__buttons">
+								<button class="card__button">Preview</button>
+								<button class="card__button">Open</button>
+							</div>
+						</li>
+						<li class="markup__card card">
+							<div class="card__image-wrapper _bgi">
+								<img src="img/markup/go-corona-screenshot.jpg" alt="growfy markup screenshot"
+									class="card__image  _bgi-image">
+							</div>
+							<div class="card__buttons">
+								<button class="card__button">Preview</button>
+								<button class="card__button">Open</button>
+							</div>
 						</li>
 					</ul>
 				</div>
