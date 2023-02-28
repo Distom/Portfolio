@@ -85,3 +85,11 @@ function updateButtons(card) {
 		bottomButton.hidden = true;
 	}
 }
+
+let iframe = document.querySelector('.preview-block__iframe');
+
+iframe.onload = function () {
+	console.log('load');
+	console.log(iframe.contentWindow);
+	iframe.contentDocument.body.classList.add('scrollbar');
+}
