@@ -101,6 +101,17 @@ h6 {
     --rotate: 360deg;
   }
 }
+@keyframes arrowJamping {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 html {
   font-size: 20px;
 }
@@ -408,8 +419,12 @@ body {
   top: 0;
   left: calc((100vw - 1300px) / 2 + 15px);
 }
+.markup_preview .markup__cards-buttons {
+  opacity: 1;
+}
 .markup_preview .card {
   flex: 0 0 236px;
+  transition: margin 0.3s, transform 0.3s;
 }
 .markup_preview .card_active {
   margin: 70px 0;
@@ -417,11 +432,8 @@ body {
 }
 .markup_preview .card_selected .card__image {
   opacity: 0.6;
-  filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
+  filter: hue-rotate(var(--rotate)) contrast(175%);
   animation: spin 2.5s ease-in-out infinite;
-}
-.markup_preview .card_selected .card__buttons {
-  z-index: 20;
 }
 .markup_preview .card_selected:before {
   content: "";
@@ -435,7 +447,7 @@ body {
   left: 0;
   transition: opacity 1s;
   animation: spin 2.5s linear infinite;
-  opacity: 0.3;
+  opacity: 1;
 }
 .markup_preview .card_selected:after {
   position: absolute;
@@ -458,6 +470,7 @@ body {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  transition: top 0.3s;
 }
 .markup__card {
   display: block;
@@ -467,6 +480,45 @@ body {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+}
+.markup__cards-buttons {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.markup__cards-button {
+  background: transparent;
+  opacity: 0.3;
+  width: 180px;
+  height: calc(50vh - 155px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  transition: opacity 0.3s;
+}
+.markup__cards-button:hover {
+  opacity: 1;
+}
+.markup__cards-button:hover .markup__cards-button-icon {
+  animation: arrowJamping 1s cubic-bezier(0.71, 0.06, 0.14, 0.97) infinite;
+}
+.markup__cards-button_top {
+  top: 0;
+}
+.markup__cards-button_bottom {
+  transform: rotate(180deg);
+  bottom: 0;
+}
+.markup__cards-button-icon {
+  width: 100px;
+  height: 100px;
+  transform: translateY(0px);
+  transition: transform 1s;
+}
+.markup__cards-button-icon path {
+  transform: scale(1.07, 0.5) translate(-17.4%, 105%);
+  fill: #fff;
 }
 
 .card {
@@ -483,15 +535,16 @@ body {
   animation: none;
 }
 .card__buttons {
-  display: flex;
   flex-direction: column;
   gap: 32px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: -1;
+  display: none;
+  opacity: 0;
   align-items: center;
+  transition: opacity 0.3s;
 }
 .card__button {
   display: inline-block;
@@ -545,7 +598,8 @@ body {
   animation: spin 2.5s ease-in-out infinite;
 }
 .card:hover .card__buttons {
-  z-index: 20;
+  display: flex;
+  opacity: 1;
 }
 .card:hover::before, .card:hover::after {
   animation: spin 2.5s linear infinite;
@@ -557,4 +611,7 @@ body {
 
 .footer {
   text-align: center;
+}
+[hidden] {
+  display: none;
 }
