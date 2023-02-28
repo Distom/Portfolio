@@ -89,8 +89,6 @@ function updateButtons(card) {
 let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.onload = function () {
-	console.log('load');
-	console.log(iframe.contentWindow);
 	iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 	iframe.contentDocument.body.classList.add('scrollbar');
 }
