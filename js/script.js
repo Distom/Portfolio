@@ -42,7 +42,6 @@ function setCenterCard(card) {
 	let neededTop = (innerHeight - (card.offsetHeight + activeCardMargin * 2)) / 2;
 
 	if (prevCard?.nextElementSibling == card) {
-		console.log('compens');
 		let compensationSize = activeCardMargin * 2;
 		currentTop -= compensationSize;
 	} else if (prevCard == card) {
@@ -100,21 +99,21 @@ function onResize() {
 
 
 function switchPreviewDevice(event) {
-	let button = event.target.closest('.preview-block__button');
+	let button = event.target.closest('.preview-block__button-wrapper');
 	if (!button) return;
 
-	let prevSelectedButton = document.querySelector('.preview-block__button_selected');
-	prevSelectedButton.classList.remove('preview-block__button_selected');
-	button.classList.add('preview-block__button_selected');
+	let prevSelectedButton = document.querySelector('.preview-block__button-wrapper_selected');
+	prevSelectedButton.classList.remove('preview-block__button-wrapper_selected');
+	button.classList.add('preview-block__button-wrapper_selected');
 
 	let deviceBlock = document.querySelector('.preview-block__device');
 	deviceBlock.classList.remove(`preview-block__device_${prevSelectedButton.dataset.device}`);
 	deviceBlock.classList.add(`preview-block__device_${button.dataset.device}`);
 }
 
-let iframe = document.querySelector('.preview-block__iframe');
+/* let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.onload = function () {
 	iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 	iframe.contentDocument.body.classList.add('scrollbar');
-}
+} */

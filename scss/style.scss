@@ -500,6 +500,7 @@ body {
 		align-items: center;
 		position: fixed;
 		transition: opacity 0.3s;
+		animation: none;
 
 		&:hover {
 			opacity: 1;
@@ -725,66 +726,6 @@ body {
 		overflow: hidden;
 	}
 
-	/* &__device-image {
-		display: none;
-	
-		&_selected {
-			display: inline-block;
-		}
-	
-		&_ipad {
-			height: 730px;
-		}
-	
-		&_iphone {
-			height: 650px;
-		}
-	}
-	
-	&__iframe-wrapper {
-		position: absolute;
-		overflow: hidden;
-	
-		&_macbook {
-			top: 43px;
-			left: 165px;
-			width: 785px;
-			height: 492px;
-	
-			.preview-block__iframe {
-				width: 1440px;
-				height: 903px;
-				transform: scale(0.545) translate(-41.73%, -41.73%);
-			}
-		}
-	
-		&_ipad {
-			top: 78px;
-			left: 346px;
-			width: 430px;
-			height: 574px;
-	
-			.preview-block__iframe {
-				width: 800px;
-				height: 1068px;
-				transform: scale(0.5375) translate(-42.9%, -42.9%);
-			}
-		}
-	
-		&_iphone {
-			top: 76px;
-			left: 423px;
-			width: 273px;
-			height: 474px;
-	
-			.preview-block__iframe {
-				width: 400px;
-				height: 696px;
-				transform: scale(0.6826) translate(-23.3%, -23.3%);
-			}
-		}
-	} */
-
 	&__iframe {
 		display: block;
 	}
@@ -800,19 +741,45 @@ body {
 		gap: 32px;
 	}
 
-	&__button {
-		background: transparent;
-		padding: 0 0 100% 0;
-		opacity: 0.4;
-		transition: opacity 0.3s;
+	&__button-wrapper {
+		position: relative;
 
 		&_selected {
-			opacity: 1;
+			.preview-block__button:not(.preview-block__button_rotate) {
+				opacity: 1;
+			}
+
+			.preview-block__button_rotate {
+				display: block;
+			}
 		}
+	}
+
+	&__button {
+		background: transparent;
+		padding: 0 100% 100% 0;
+		opacity: 0.4;
+		transition: opacity 0.3s;
 
 		&:hover {
 			opacity: 1;
 		}
+
+		&_rotate {
+			display: none;
+			padding: 0 40% 40% 0;
+			position: absolute;
+			top: 35px;
+			left: -30px;
+			transition: transform 0.3s;
+
+			&:hover {
+				opacity: 0.7;
+				transform: rotate(-30deg);
+			}
+		}
+
+
 	}
 
 	&__icon {}
