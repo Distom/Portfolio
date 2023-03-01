@@ -30,7 +30,7 @@
 /* scrollbar when element is hovered */
 .scrollbar:hover::-webkit-scrollbar-thumb {
 	background-color: rgba(160, 160, 165, 0.5);
-	border: 4px solid rgba(255, 255, 255, 0.3);
+	/*border: 4px solid rgba(255, 255, 255, 0.3);*/
 }
 
 /* scrollbar when scrollbar is hovered */
@@ -41,12 +41,12 @@
 
 @media (max-width: 1300px) {
 	.scrollbar::-webkit-scrollbar {
-		width: 2px;
-		height: 2px;
+		width: 4px;
+		height: 4px;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb {
-		border-radius: 2px;
+		border-radius: 4px;
 	}
 
 	.scrollbar:hover::-webkit-scrollbar-thumb,
