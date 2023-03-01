@@ -1,6 +1,7 @@
 'use strict'
 
 const activeCardMargin = 70;
+const activeCardScale = 1.2;
 let previewOn = false;
 let isSwitchingCards = false;
 
@@ -8,6 +9,7 @@ let isSwitchingCards = false;
 document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
 document.addEventListener('click', switchPreviewDevice);
+window.addEventListener('resize', onResize);
 
 function preview(event) {
 	let button = event.target;
@@ -40,8 +42,11 @@ function setCenterCard(card) {
 	let neededTop = (innerHeight - (card.offsetHeight + activeCardMargin * 2)) / 2;
 
 	if (prevCard?.nextElementSibling == card) {
+		console.log('compens');
 		let compensationSize = activeCardMargin * 2;
 		currentTop -= compensationSize;
+	} else if (prevCard == card) {
+		currentTop -= card.offsetHeight * activeCardScale - card.offsetHeight;
 	}
 
 	let newCardsTop = neededTop - currentTop;
@@ -87,6 +92,12 @@ function updateButtons(card) {
 	}
 }
 
+function onResize() {
+	if (previewOn) {
+		setCenterCard(document.querySelector('.card_active'));
+	}
+}
+
 
 function switchPreviewDevice(event) {
 	let button = event.target.closest('.preview-block__button');
@@ -104,6 +115,6 @@ function switchPreviewDevice(event) {
 let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.onload = function () {
-	iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
+	iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 	iframe.contentDocument.body.classList.add('scrollbar');
 }
