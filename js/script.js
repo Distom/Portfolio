@@ -7,6 +7,7 @@ let isSwitchingCards = false;
 
 document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
+document.addEventListener('click', switchPreviewDevice);
 
 function preview(event) {
 	let button = event.target;
@@ -86,9 +87,23 @@ function updateButtons(card) {
 	}
 }
 
-let iframe = document.querySelector('.preview-block__iframe');
+
+function switchPreviewDevice(event) {
+	let button = event.target.closest('.preview-block__button');
+	if (!button) return;
+
+	let prevSelectedButton = document.querySelector('.preview-block__button_selected');
+	prevSelectedButton.classList.remove('preview-block__button_selected');
+	button.classList.add('preview-block__button_selected');
+
+	let deviceBlock = document.querySelector('.preview-block__device');
+	deviceBlock.classList.remove(`preview-block__device_${prevSelectedButton.dataset.device}`);
+	deviceBlock.classList.add(`preview-block__device_${button.dataset.device}`);
+}
+
+/* let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.onload = function () {
 	iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 	iframe.contentDocument.body.classList.add('scrollbar');
-}
+} */

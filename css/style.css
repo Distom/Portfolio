@@ -624,45 +624,127 @@ body {
   width: 1120px;
   max-height: 100vh;
   transform: translateY(-50%);
+  /* &__device-image {
+  	display: none;
+
+  	&_selected {
+  		display: inline-block;
+  	}
+
+  	&_ipad {
+  		height: 730px;
+  	}
+
+  	&_iphone {
+  		height: 650px;
+  	}
+  }
+
+  &__iframe-wrapper {
+  	position: absolute;
+  	overflow: hidden;
+
+  	&_macbook {
+  		top: 43px;
+  		left: 165px;
+  		width: 785px;
+  		height: 492px;
+
+  		.preview-block__iframe {
+  			width: 1440px;
+  			height: 903px;
+  			transform: scale(0.545) translate(-41.73%, -41.73%);
+  		}
+  	}
+
+  	&_ipad {
+  		top: 78px;
+  		left: 346px;
+  		width: 430px;
+  		height: 574px;
+
+  		.preview-block__iframe {
+  			width: 800px;
+  			height: 1068px;
+  			transform: scale(0.5375) translate(-42.9%, -42.9%);
+  		}
+  	}
+
+  	&_iphone {
+  		top: 76px;
+  		left: 423px;
+  		width: 273px;
+  		height: 474px;
+
+  		.preview-block__iframe {
+  			width: 400px;
+  			height: 696px;
+  			transform: scale(0.6826) translate(-23.3%, -23.3%);
+  		}
+  	}
+  } */
 }
 .preview-block__device {
   position: relative;
   text-align: center;
 }
-.preview-block__device-image {
-  display: none;
-}
-.preview-block__device-image_selected {
+.preview-block__device_macbook .preview-block__device-image_macbook {
   display: inline-block;
 }
-.preview-block__device-image_ipad {
-  height: 730px;
-}
-.preview-block__iframe-wrapper {
-  position: absolute;
-  overflow: hidden;
-}
-.preview-block__iframe-wrapper_macbook {
+.preview-block__device_macbook .preview-block__iframe-wrapper {
   top: 43px;
   left: 165px;
   width: 785px;
   height: 492px;
 }
-.preview-block__iframe-wrapper_macbook .preview-block__iframe {
+.preview-block__device_macbook .preview-block__iframe-wrapper .preview-block__iframe {
   width: 1440px;
   height: 903px;
   transform: scale(0.545) translate(-41.73%, -41.73%);
 }
-.preview-block__iframe-wrapper_ipad {
+.preview-block__device_ipad .preview-block__device-image_ipad {
+  display: inline-block;
+}
+.preview-block__device_ipad .preview-block__iframe-wrapper {
   top: 78px;
   left: 346px;
   width: 430px;
   height: 574px;
 }
-.preview-block__iframe-wrapper_ipad .preview-block__iframe {
+.preview-block__device_ipad .preview-block__iframe-wrapper .preview-block__iframe {
   width: 800px;
   height: 1068px;
-  transform: scale(0.5375) translate(-42.9%, -43%);
+  transform: scale(0.5375) translate(-42.9%, -42.9%);
+}
+.preview-block__device_iphone .preview-block__device-image_iphone {
+  display: inline-block;
+}
+.preview-block__device_iphone .preview-block__iframe-wrapper {
+  top: 76px;
+  left: 423px;
+  width: 273px;
+  height: 474px;
+}
+.preview-block__device_iphone .preview-block__iframe-wrapper .preview-block__iframe {
+  width: 400px;
+  height: 696px;
+  transform: scale(0.6826) translate(-23.3%, -23.3%);
+}
+.preview-block__device-image {
+  display: none;
+}
+.preview-block__device-image_ipad {
+  height: 730px;
+}
+.preview-block__device-image_iphone {
+  height: 650px;
+}
+.preview-block__iframe-wrapper {
+  position: absolute;
+  overflow: hidden;
+}
+.preview-block__iframe {
+  display: block;
 }
 .preview-block__buttons {
   width: 48px;
