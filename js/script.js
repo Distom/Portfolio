@@ -111,9 +111,9 @@ function switchPreviewDevice(event) {
 	deviceBlock.classList.add(`preview-block__device_${button.dataset.device}`);
 }
 
-/* let iframe = document.querySelector('.preview-block__iframe');
+let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.onload = function () {
 	iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 	iframe.contentDocument.body.classList.add('scrollbar');
-} */
+}
