@@ -27,11 +27,11 @@
 	display: none;
 }
 
-/* scrollbar when element is hovered 
+/*scrollbar when element is hovered */
 .scrollbar:hover::-webkit-scrollbar-thumb {
 	background-color: rgba(160, 160, 165, 0.5);
-	border: 4px solid rgba(255, 255, 255, 0.3);
-}*/
+	/*border: 4px solid rgba(255, 255, 255, 0.3);*/
+}
 
 /* scrollbar when scrollbar is hovered */
 .scrollbar::-webkit-scrollbar-thumb:hover {

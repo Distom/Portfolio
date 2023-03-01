@@ -649,6 +649,11 @@ body {
 	&__device {
 		position: relative;
 		text-align: center;
+		transition: transform 0.3s;
+
+		&_rotated {
+			transform: rotate(-90deg);
+		}
 
 		&_macbook {
 			.preview-block__device-image_macbook {

@@ -629,6 +629,10 @@ body {
 .preview-block__device {
   position: relative;
   text-align: center;
+  transition: transform 0.3s;
+}
+.preview-block__device_rotated {
+  transform: rotate(-90deg);
 }
 .preview-block__device_macbook .preview-block__device-image_macbook {
   display: inline-block;

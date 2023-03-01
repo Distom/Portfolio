@@ -9,6 +9,7 @@ let isSwitchingCards = false;
 document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
 document.addEventListener('click', switchPreviewDevice);
+document.addEventListener('click', rotateDevice);
 window.addEventListener('resize', onResize);
 
 function preview(event) {
@@ -109,6 +110,16 @@ function switchPreviewDevice(event) {
 	let deviceBlock = document.querySelector('.preview-block__device');
 	deviceBlock.classList.remove(`preview-block__device_${prevSelectedButton.dataset.device}`);
 	deviceBlock.classList.add(`preview-block__device_${button.dataset.device}`);
+}
+
+function rotateDevice(event) {
+	let button = event.target.closest('.preview-block__button_rotate');
+	if (!button) return;
+
+	let deviceName = button.closest('.preview-block__button-wrapper').dataset.device;
+
+	let deviceBlock = document.querySelector('.preview-block__device');
+	deviceBlock.classList.toggle('preview-block__device_rotated');
 }
 
 let iframe = document.querySelector('.preview-block__iframe');
