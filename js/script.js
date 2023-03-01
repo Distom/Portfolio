@@ -99,27 +99,41 @@ function onResize() {
 }
 
 
-function switchPreviewDevice(event) {
-	let button = event.target.closest('.preview-block__button-wrapper');
-	if (!button) return;
+async function switchPreviewDevice(event) {
+	let button = event.target.closest('.preview-block__button');
+	let buttonWrapper = event.target.closest('.preview-block__button-wrapper');
+	if (!buttonWrapper || !button || button.classList.contains('preview-block__button_rotate')) return;
 
 	let prevSelectedButton = document.querySelector('.preview-block__button-wrapper_selected');
 	prevSelectedButton.classList.remove('preview-block__button-wrapper_selected');
-	button.classList.add('preview-block__button-wrapper_selected');
+	buttonWrapper.classList.add('preview-block__button-wrapper_selected');
 
 	let deviceBlock = document.querySelector('.preview-block__device');
 	deviceBlock.classList.remove(`preview-block__device_${prevSelectedButton.dataset.device}`);
-	deviceBlock.classList.add(`preview-block__device_${button.dataset.device}`);
+	deviceBlock.classList.add(`preview-block__device_${buttonWrapper.dataset.device}`);
+
+	// remove rotate transition on switching devices
+	deviceBlock.style.transition = 'none';
+	deviceBlock.classList.remove('preview-block__device_rotated');
+	await render();
+	deviceBlock.style.transition = '';
 }
 
 function rotateDevice(event) {
 	let button = event.target.closest('.preview-block__button_rotate');
 	if (!button) return;
 
-	let deviceName = button.closest('.preview-block__button-wrapper').dataset.device;
-
 	let deviceBlock = document.querySelector('.preview-block__device');
+
+	let iframeWrapper = document.querySelector('.preview-block__iframe-wrapper');
+	let iframe = document.querySelector('.preview-block__iframe');
+
+	// add rotation delay for screen content
+	iframe.style.transition = iframeWrapper.style.transition = 'all 0s 0.3s';
 	deviceBlock.classList.toggle('preview-block__device_rotated');
+	deviceBlock.addEventListener('transitionend', () => {
+		iframe.style.transition = iframeWrapper.style.transition = '';
+	}, { once: true });
 }
 
 let iframe = document.querySelector('.preview-block__iframe');

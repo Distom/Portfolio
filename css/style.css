@@ -634,6 +634,30 @@ body {
 .preview-block__device_rotated {
   transform: rotate(-90deg);
 }
+.preview-block__device_rotated.preview-block__device_ipad .preview-block__iframe-wrapper {
+  transform: rotate(90deg);
+  top: 149px;
+  left: 276px;
+  height: 430px;
+  width: 574px;
+}
+.preview-block__device_rotated.preview-block__device_ipad .preview-block__iframe-wrapper .preview-block__iframe {
+  height: 800px;
+  width: 1068px;
+  transform: scale(0.5375) translate(-42.9%, -42.9%);
+}
+.preview-block__device_rotated.preview-block__device_iphone .preview-block__iframe-wrapper {
+  transform: rotate(90deg);
+  top: 177px;
+  left: 323px;
+  height: 273px;
+  width: 474px;
+}
+.preview-block__device_rotated.preview-block__device_iphone .preview-block__iframe-wrapper .preview-block__iframe {
+  height: 400px;
+  width: 696px;
+  transform: scale(0.6826) translate(-23.3%, -23.3%);
+}
 .preview-block__device_macbook .preview-block__device-image_macbook {
   display: inline-block;
 }
@@ -669,7 +693,7 @@ body {
   top: 76px;
   left: 423px;
   width: 273px;
-  height: 474px;
+  height: 475px;
 }
 .preview-block__device_iphone .preview-block__iframe-wrapper .preview-block__iframe {
   width: 400px;
