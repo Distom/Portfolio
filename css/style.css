@@ -875,8 +875,6 @@ body {
   text-align: center;
 }
 .modal__button {
-  /* display: block;
-  margin: 0 auto; */
   padding: 5px 15px;
   width: 60%;
   background: rgba(255, 255, 255, 0.1);

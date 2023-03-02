@@ -166,7 +166,7 @@ function scrollCards(event) {
 function checkScreenSize() {
 	let height = document.documentElement.clientHeight;
 	let width = document.documentElement.clientWidth;
-	return height >= 610 && width >= 1280;
+	return height >= 610 && width >= 1260;
 }
 
 function showModal(innerHTML) {
