@@ -2,6 +2,7 @@
 
 const activeCardMargin = 70;
 const activeCardScale = 1.2;
+const switchingCardDelay = 300;
 let previewOn = false;
 let isSwitchingCards = false;
 
@@ -10,11 +11,17 @@ document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
 document.addEventListener('click', switchPreviewDevice);
 document.addEventListener('click', rotateDevice);
+document.addEventListener('wheel', scrollCards);
 window.addEventListener('resize', onResize);
 
 function preview(event) {
 	let button = event.target;
 	if (!button.classList.contains('preview-button')) return;
+
+	if (!checkScreenSize()) {
+		showModal('You need to use a device with a larger screen size to enter the preview mode. Also, if you have a large zoom setting, you can try to reduce it.');
+		return;
+	}
 
 	document.querySelector('.card_selected')?.classList.remove('card_selected');
 	let card = button.closest('.card');
@@ -51,7 +58,6 @@ function setCenterCard(card) {
 
 	let newCardsTop = neededTop - currentTop;
 	cards.style.top = newCardsTop + cardsTop + 'px';
-	cards.addEventListener('transitionend', () => isSwitchingCards = false, { once: true });
 
 	prevCard?.classList.remove('card_active');
 	card.classList.add('card_active');
@@ -65,6 +71,7 @@ function switchActiveCard(event) {
 	if (isSwitchingCards) return;
 
 	isSwitchingCards = true;
+	setTimeout(() => isSwitchingCards = false, switchingCardDelay);
 	let direction = button.classList.contains('markup__cards-button_bottom') ? 'bottom' : 'top';
 	let activeCard = document.querySelector('.card_active');
 
@@ -95,6 +102,11 @@ function updateButtons(card) {
 function onResize() {
 	if (previewOn) {
 		setCenterCard(document.querySelector('.card_active'));
+
+		if (!checkScreenSize()) {
+			showModal('Your screen size is not large enough to use the preview mode.');
+			// ДОБАВИТЬ ВЫХОД ИЗ ПРЕВЬЮ РЕЖИМА
+		}
 	}
 }
 
@@ -133,6 +145,41 @@ function rotateDevice(event) {
 	deviceBlock.classList.toggle('preview-block__device_rotated');
 	deviceBlock.addEventListener('transitionend', () => {
 		iframe.style.transition = iframeWrapper.style.transition = '';
+	}, { once: true });
+}
+
+function scrollCards(event) {
+	if (!previewOn) return;
+	if (!(event.target.closest('.markup__cards') || event.target.closest('.markup__cards-buttons'))) return;
+
+	let nextBtn = document.querySelector('.markup__cards-button_bottom');
+	let prevBtn = document.querySelector('.markup__cards-button_top');
+	let click = new CustomEvent('click', { bubbles: true });
+
+	if (event.deltaY > 0 && nextBtn.clientHeight) {
+		nextBtn.dispatchEvent(click);
+	} else if (event.deltaY < 0 && prevBtn.clientHeight) {
+		prevBtn?.dispatchEvent(click);
+	}
+}
+
+function checkScreenSize() {
+	let height = document.documentElement.clientHeight;
+	let width = document.documentElement.clientWidth;
+	return height >= 610 && width >= 1280;
+}
+
+function showModal(innerHTML) {
+	let modal = document.querySelector('.modal');
+	document.querySelector('.modal__text').innerHTML = innerHTML;
+	let scrollWidth = window.innerWidth - document.documentElement.clientWidth;
+	modal.showModal();
+
+	document.body.style.paddingRight = scrollWidth + 'px';
+	document.body.style.overflow = 'hidden';
+	modal.addEventListener('close', () => {
+		document.body.style.overflow = '';
+		document.body.style.paddingRight = '';
 	}, { once: true });
 }
 

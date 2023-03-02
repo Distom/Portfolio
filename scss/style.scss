@@ -397,6 +397,10 @@ body {
 				position: fixed;
 				top: 0;
 				left: calc((100vw - 1300px) / 2 + 15px);
+
+				@media (max-width: 1315px) {
+					left: calc((100vw - 1300px) / 2 + 30px);
+				}
 			}
 
 			&__cards-buttons {
@@ -471,6 +475,7 @@ body {
 		gap: 15px;
 		flex-wrap: wrap;
 		transition: top 0.3s;
+		user-select: none;
 	}
 
 	&__card {
@@ -487,6 +492,12 @@ body {
 		display: none;
 		opacity: 0;
 		transition: opacity 0.3s;
+		position: fixed;
+		left: calc((100vw - 1300px) / 2);
+
+		@media (max-width: 1315px) {
+			left: calc((100vw - 1300px) / 2 + 15px);
+		}
 	}
 
 	&__cards-button {
@@ -646,6 +657,10 @@ body {
 	max-height: 100vh;
 	transform: translateY(-50%);
 
+	@media (max-width: 1315px) {
+		right: calc((100vw - 1300px) / 2 + 15px);
+	}
+
 	&__device {
 		position: relative;
 		text-align: center;
@@ -666,7 +681,6 @@ body {
 				.preview-block__iframe {
 					height: 800px;
 					width: 1068px;
-					transform: scale(0.5375) translate(-42.9%, -42.9%);
 				}
 			}
 		}
@@ -682,7 +696,19 @@ body {
 				.preview-block__iframe {
 					height: 400px;
 					width: 696px;
-					transform: scale(0.6826) translate(-23.3%, -23.3%);
+				}
+
+				@media (max-height: 640px) {
+					top: 162px;
+					left: 339px;
+					width: 439px;
+					height: 252px;
+
+					.preview-block__iframe {
+						width: 696px;
+						height: 400px;
+						transform: scale(0.63) translate(-29%, -29.5%);
+					}
 				}
 			}
 		}
@@ -704,6 +730,14 @@ body {
 					transform: scale(0.545) translate(-41.73%, -41.73%);
 				}
 			}
+
+			@media (max-width: 1315px) {
+				transform: scale(0.95);
+			}
+
+			@media (max-height: 620px) {
+				transform: scale(0.95);
+			}
 		}
 
 
@@ -724,6 +758,23 @@ body {
 					transform: scale(0.5375) translate(-42.9%, -42.9%);
 				}
 			}
+
+			@media (max-height: 725px) {
+				transform: rotate(-90deg) translateX(calc(65px - ((100vh - 595px) / 2)));
+
+				.preview-block__iframe-wrapper {
+					transform: rotate(90deg);
+					top: 149px;
+					left: 276px;
+					height: 430px;
+					width: 574px;
+
+					.preview-block__iframe {
+						height: 800px;
+						width: 1068px;
+					}
+				}
+			}
 		}
 
 		&_iphone {
@@ -742,6 +793,19 @@ body {
 					height: 696px;
 					transform: scale(0.6826) translate(-23.3%, -23.3%);
 				}
+
+				@media (max-height: 640px) {
+					top: 71px;
+					left: 433px;
+					width: 252px;
+					height: 439px;
+
+					.preview-block__iframe {
+						width: 400px;
+						height: 696px;
+						transform: scale(0.63) translate(-29%, -29.5%);
+					}
+				}
 			}
 		}
 	}
@@ -755,6 +819,10 @@ body {
 
 		&_iphone {
 			height: 650px;
+
+			@media (max-height: 640px) {
+				height: 600px;
+			}
 		}
 	}
 
@@ -790,6 +858,14 @@ body {
 				display: block;
 			}
 		}
+
+		&[data-device="ipad"] {
+			@media (max-height: 725px) {
+				.preview-block__button_rotate {
+					display: none;
+				}
+			}
+		}
 	}
 
 	&__button {
@@ -820,6 +896,72 @@ body {
 	}
 
 	&__icon {}
+}
+
+//----------------------------------------
+.modal {
+	color: $titleColor;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	padding: 32px;
+	max-width: 400px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 0 100px rgba(255, 255, 255, 0.3);
+	border: 1px solid rgba(255, 255, 255, 0.6);
+
+	::before {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		background: linear-gradient(100deg, #984D38 -100%, #181e41 65%, #181E41 80%, #984D38 500%);
+		z-index: -10;
+		opacity: 0.2;
+	}
+
+	@media (max-width: 700px) {
+		left: 10%;
+		right: 10%;
+		transform: translateY(-50%);
+		max-width: none;
+	}
+
+	&__text {
+		margin-bottom: 20px;
+	}
+
+	&__form {
+		text-align: center;
+	}
+
+	&__button {
+		/* display: block;
+		margin: 0 auto; */
+		padding: 5px 15px;
+		width: 60%;
+		background: $transBack;
+		color: $titleColor;
+		font-size: 1rem;
+		text-align: center;
+		border-radius: 10px;
+		transition: background 0.3s;
+
+		&:hover {
+			background-color: $greenDark;
+		}
+	}
+
+
+}
+
+::backdrop {
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(4px);
 }
 
 
