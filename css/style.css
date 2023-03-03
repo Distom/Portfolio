@@ -450,6 +450,15 @@ body {
   filter: hue-rotate(var(--rotate)) contrast(175%);
   animation: spin 2.5s ease-in-out infinite;
 }
+.markup_preview .card_selected:hover .card__image {
+  opacity: 0.6;
+  filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
+  animation: spin 2.5s ease-in-out infinite;
+}
+.markup_preview .card_selected:hover::before {
+  animation: spin 2.5s linear infinite;
+  opacity: 1;
+}
 .markup_preview .card_selected:before {
   content: "";
   width: 100%;
@@ -638,12 +647,16 @@ body {
   display: flex;
   opacity: 1;
 }
-.card:hover::before, .card:hover::after {
+.card:hover::before {
   animation: spin 2.5s linear infinite;
   opacity: 1;
 }
 .card:hover::before {
   opacity: 0.3;
+}
+
+.transparent-pseudo::after, .transparent-pseudo::before {
+  opacity: 0 !important;
 }
 
 .preview-block {

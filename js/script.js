@@ -44,65 +44,148 @@ function startPreviewMode(startCard) {
 	let userScrollY = scrollY;
 	markup.scrollIntoView({ block: 'start' });
 	setCenterCard(startCard);
-	showCards(startCardsProperties, startCard);
+	moveCards(startCardsProperties, startCard);
 	render().then(() => cards.style.transition = startCard.style.transition = '');
 	scrollTo(0, userScrollY);
 	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
 
 	endScroll().then(() => document.body.style.overflow = 'hidden');
-	showPreviewBlock();
+	movePreviewBlock();
 	previewOn = true;
+
+	document.addEventListener('keydown', closePreview);
+}
+
+function closePreview(event) {
+	let key = event.code;
+	if (key != 'Escape') return;
+	endPreviewMode();
+}
+
+async function endPreviewMode() {
+	document.removeEventListener('keydown', closePreview);
+	let startCardsProperties = getCardsProperties();
+	let cards = document.querySelector('.markup__cards');
+	cards.style.transition = 'all 0s';
+
+	let userScrollY = scrollY;
+	let markup = document.querySelector('.markup');
+	let markupHeight = markup.clientHeight;
+	markup.classList.remove('markup_preview');
+
+	scrollTo(0, 0);
+	moveCards(startCardsProperties);
+	render().then(() => cards.style.transition = '');
+	markup.classList.add('markup_preview');
+	scrollTo(0, userScrollY);
+	await movePreviewBlock(false);
+	scrollTo({ top: 0, left: 0, behavior: "smooth" });
+	markup.classList.remove('markup_preview');
+	markup.style.height = markupHeight + 'px';
+	// удалить классы карточек
+
+	await endScroll();
+	document.body.style.overflow = '';
+	previewOn = false;
 }
 
 function endScroll() {
 	let prevScrollY = null;
 	let frequency = 50;
+
 	return new Promise(resolve => {
 		let interval = setInterval(() => {
 			if (scrollY == prevScrollY) {
 				resolve();
 				clearInterval(interval);
 			}
+
 			prevScrollY = scrollY;
 		}, frequency);
 	});
 }
 
-function showCards(startCardsProperties, startCard) {
+function moveCards(startCardsProperties, startCard, show = true) {
 	let endCardsProperties = getCardsProperties();
 	let cardsElem = document.querySelector('.markup__cards');
 	let cards = document.querySelectorAll('.markup__card');
 
-	Array.from(cards).forEach((card, index) => {
+	Array.from(cards).forEach((card) => {
 		document.body.append(card);
 		card.style.position = 'absolute';
-		let scale = card == startCard ? activeCardScale : 1;
+		let scale = 1;
+		let opacity = 1;
+		let filterStart = 'none';
+		let filterEnd = 'none';
 
-		let animation = card.animate([
-			{
+		if (card == startCard) {
+			scale = 1.2;
+			opacity = 0.6;
+			filterStart = 'hue-rotate(100deg) blur(5px) contrast(175%)';
+			filterEnd = 'contrast(175%)';
+
+			card.querySelector('.card__buttons').style.display = 'none';
+			card.classList.add('transparent-pseudo');
+		}
+
+		let startKeyFrame = {
+			top: startCardsProperties.get(card).top + 'px',
+			left: startCardsProperties.get(card).left + 'px',
+			width: startCardsProperties.get(card).width + 'px',
+			height: startCardsProperties.get(card).height + 'px',
+			padding: '26px',
+			filter: filterStart,
+			opacity: 1,
+		};
+
+		let endKeyFrame = {
+			top: endCardsProperties.get(card).top - endCardsProperties.get(card).height / 2 + 'px',
+			left: endCardsProperties.get(card).left + 'px',
+			width: endCardsProperties.get(card).width * scale + 'px',
+			height: endCardsProperties.get(card).height * scale + 'px',
+			padding: '4px',
+			filter: filterEnd,
+			opacity: opacity,
+		};
+
+		if (!show) {
+			startKeyFrame = {
 				top: startCardsProperties.get(card).top + 'px',
 				left: startCardsProperties.get(card).left + 'px',
 				width: startCardsProperties.get(card).width + 'px',
 				height: startCardsProperties.get(card).height + 'px',
-				padding: '26px',
-			},
-			{
+				padding: '4px',
+				filter: filterStart,
+				opacity: 1,
+			};
+
+			endKeyFrame = {
 				top: endCardsProperties.get(card).top - endCardsProperties.get(card).height / 2 + 'px',
 				left: endCardsProperties.get(card).left + 'px',
 				width: endCardsProperties.get(card).width * scale + 'px',
 				height: endCardsProperties.get(card).height * scale + 'px',
-				padding: '4px',
-			}
-		],
+				padding: '26px',
+				filter: filterEnd,
+				opacity: opacity,
+			};
+		}
+
+		let animation = card.animate([startKeyFrame, endKeyFrame],
 			{
-				duration: 500,
+				duration: 3000,
 				easing: 'ease-in-out',
 			});
 
 		animation.addEventListener('finish', () => {
 			cardsElem.append(card);
 			card.style.position = '';
+
+			if (card == startCard) {
+				card.querySelector('.card__buttons').style.display = '';
+				render(10).then(() => card.classList.remove('transparent-pseudo'));
+			}
 		}, { once: true });
+
 	});
 }
 
@@ -112,12 +195,14 @@ function getCardsProperties() {
 
 	cardsArr.forEach((card, index) => {
 		let rect = getAbsoluteBoundingClientRect(card);
+
 		cardsProperties.set(card, {
 			top: rect.top + card.offsetHeight / 2,
 			left: rect.left,
 			width: card.offsetWidth,
 			height: card.offsetHeight,
 		});
+
 	});
 
 	return cardsProperties;
@@ -134,12 +219,21 @@ function getAbsoluteBoundingClientRect(elem) {
 	}
 }
 
-function showPreviewBlock() {
+function movePreviewBlock(show = true) {
+	let duration = 300;
+	let direction = 'normal';
+	let easing = 'ease-out';
+
+	if (!show) {
+		direction = 'reverse';
+		easing = 'ease-in';
+	}
+
 	let previewBlock = document.querySelector('.markup__preview-block');
 	let top = previewBlock.getBoundingClientRect().top;
 	let left = previewBlock.getBoundingClientRect().left;
 
-	previewBlock.animate([
+	let animation = previewBlock.animate([
 		{
 			position: 'fixed',
 			top: innerHeight + previewBlock.clientHeight / 2 + 'px',
@@ -151,8 +245,13 @@ function showPreviewBlock() {
 			left: left + 'px',
 		}
 	], {
-		duration: 300,
-		easing: 'ease-out'
+		duration: duration,
+		easing: easing,
+		direction: direction,
+	});
+
+	return new Promise(resolve => {
+		animation.addEventListener('finish', () => resolve(), { once: true });
 	});
 }
 

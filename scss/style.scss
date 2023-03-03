@@ -431,6 +431,19 @@ body {
 					animation: spin 2.5s ease-in-out infinite;
 				}
 
+				&:hover {
+					.card__image {
+						opacity: 0.6;
+						filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
+						animation: spin 2.5s ease-in-out infinite;
+					}
+
+					&::before {
+						animation: spin 2.5s linear infinite;
+						opacity: 1;
+					}
+				}
+
 				&:before {
 					content: "";
 					width: 100%;
@@ -643,8 +656,11 @@ body {
 			opacity: 1;
 		}
 
-		&::before,
-		&::after {
+		&::before
+
+		/* ,
+		&::after */
+			{
 			animation: spin 2.5s linear infinite;
 			opacity: 1;
 		}
@@ -657,6 +673,13 @@ body {
 
 }
 
+.transparent-pseudo {
+
+	&::after,
+	&::before {
+		opacity: 0 !important;
+	}
+}
 
 .preview-block {
 	position: fixed;
