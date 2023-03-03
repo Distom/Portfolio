@@ -5,6 +5,7 @@ const activeCardScale = 1.2;
 const switchingCardDelay = 300;
 let previewOn = false;
 let isSwitchingCards = false;
+let isClosingPreviewMode = false;
 
 
 document.addEventListener('click', preview);
@@ -63,6 +64,9 @@ function closePreview(event) {
 }
 
 async function endPreviewMode() {
+	if (isClosingPreviewMode) return;
+	isClosingPreviewMode = true;
+
 	document.removeEventListener('keydown', closePreview);
 	let startCardsProperties = getCardsProperties();
 	let cards = document.querySelector('.markup__cards');
@@ -72,9 +76,9 @@ async function endPreviewMode() {
 	let markup = document.querySelector('.markup');
 	let markupHeight = markup.clientHeight;
 	markup.classList.remove('markup_preview');
-
 	scrollTo(0, 0);
-	moveCards(startCardsProperties);
+
+	let cardsAnimation = moveCards(startCardsProperties, null, false);
 	render().then(() => cards.style.transition = '');
 	markup.classList.add('markup_preview');
 	scrollTo(0, userScrollY);
@@ -82,11 +86,15 @@ async function endPreviewMode() {
 	scrollTo({ top: 0, left: 0, behavior: "smooth" });
 	markup.classList.remove('markup_preview');
 	markup.style.height = markupHeight + 'px';
-	// удалить классы карточек
+	let scrollAnimation = endScroll();
 
-	await endScroll();
+	await Promise.all([cardsAnimation, scrollAnimation]);
 	document.body.style.overflow = '';
+	markup.style.height = '';
+	document.querySelector('.card_selected').classList.remove('card_selected');
+	document.querySelector('.card_active').classList.remove('card_active');
 	previewOn = false;
+	isClosingPreviewMode = false;
 }
 
 function endScroll() {
@@ -110,82 +118,86 @@ function moveCards(startCardsProperties, startCard, show = true) {
 	let cardsElem = document.querySelector('.markup__cards');
 	let cards = document.querySelectorAll('.markup__card');
 
-	Array.from(cards).forEach((card) => {
-		document.body.append(card);
-		card.style.position = 'absolute';
-		let scale = 1;
-		let opacity = 1;
-		let filterStart = 'none';
-		let filterEnd = 'none';
+	return new Promise(resolve => {
+		Array.from(cards).forEach((card, index) => {
+			document.body.append(card);
+			card.style.position = 'absolute';
+			let scale = 1;
+			let opacity = 1;
+			let filterStart = 'none';
+			let filterEnd = 'none';
 
-		if (card == startCard) {
-			scale = 1.2;
-			opacity = 0.6;
-			filterStart = 'hue-rotate(100deg) blur(5px) contrast(175%)';
-			filterEnd = 'contrast(175%)';
+			if (card == startCard) {
+				scale = 1.2;
+				opacity = 0.6;
+				filterStart = 'hue-rotate(100deg) blur(5px) contrast(175%)';
+				filterEnd = 'contrast(175%)';
 
-			card.querySelector('.card__buttons').style.display = 'none';
-			card.classList.add('transparent-pseudo');
-		}
+				card.querySelector('.card__buttons').style.display = 'none';
+				card.classList.add('transparent-pseudo');
+			}
 
-		let startKeyFrame = {
-			top: startCardsProperties.get(card).top + 'px',
-			left: startCardsProperties.get(card).left + 'px',
-			width: startCardsProperties.get(card).width + 'px',
-			height: startCardsProperties.get(card).height + 'px',
-			padding: '26px',
-			filter: filterStart,
-			opacity: 1,
-		};
-
-		let endKeyFrame = {
-			top: endCardsProperties.get(card).top - endCardsProperties.get(card).height / 2 + 'px',
-			left: endCardsProperties.get(card).left + 'px',
-			width: endCardsProperties.get(card).width * scale + 'px',
-			height: endCardsProperties.get(card).height * scale + 'px',
-			padding: '4px',
-			filter: filterEnd,
-			opacity: opacity,
-		};
-
-		if (!show) {
-			startKeyFrame = {
+			let startKeyFrame = {
 				top: startCardsProperties.get(card).top + 'px',
 				left: startCardsProperties.get(card).left + 'px',
 				width: startCardsProperties.get(card).width + 'px',
 				height: startCardsProperties.get(card).height + 'px',
-				padding: '4px',
+				padding: '26px',
 				filter: filterStart,
 				opacity: 1,
 			};
 
-			endKeyFrame = {
+			let endKeyFrame = {
 				top: endCardsProperties.get(card).top - endCardsProperties.get(card).height / 2 + 'px',
 				left: endCardsProperties.get(card).left + 'px',
 				width: endCardsProperties.get(card).width * scale + 'px',
 				height: endCardsProperties.get(card).height * scale + 'px',
-				padding: '26px',
+				padding: '4px',
 				filter: filterEnd,
 				opacity: opacity,
 			};
-		}
 
-		let animation = card.animate([startKeyFrame, endKeyFrame],
-			{
-				duration: 3000,
-				easing: 'ease-in-out',
-			});
+			if (!show) {
+				startKeyFrame = {
+					top: startCardsProperties.get(card).top + 'px',
+					left: startCardsProperties.get(card).left + 'px',
+					width: startCardsProperties.get(card).width + 'px',
+					height: startCardsProperties.get(card).height + 'px',
+					padding: '4px',
+					filter: filterStart,
+					opacity: opacity,
+				};
 
-		animation.addEventListener('finish', () => {
-			cardsElem.append(card);
-			card.style.position = '';
-
-			if (card == startCard) {
-				card.querySelector('.card__buttons').style.display = '';
-				render(10).then(() => card.classList.remove('transparent-pseudo'));
+				endKeyFrame = {
+					top: endCardsProperties.get(card).top - endCardsProperties.get(card).height / 2 + 'px',
+					left: endCardsProperties.get(card).left + 'px',
+					width: endCardsProperties.get(card).width * scale + 'px',
+					height: endCardsProperties.get(card).height * scale + 'px',
+					padding: '26px',
+					filter: filterEnd,
+					opacity: 1,
+				};
 			}
-		}, { once: true });
 
+			let animation = card.animate([startKeyFrame, endKeyFrame],
+				{
+					duration: 500,
+					easing: 'ease-in-out',
+				});
+
+			animation.addEventListener('finish', () => {
+				cardsElem.append(card);
+				card.style.position = '';
+
+				if (index == cards.length - 1) resolve();
+
+				if (card == startCard) {
+					card.querySelector('.card__buttons').style.display = '';
+					render(10).then(() => card.classList.remove('transparent-pseudo'));
+				}
+			}, { once: true });
+
+		});
 	});
 }
 
@@ -319,7 +331,7 @@ function onResize() {
 
 		if (!checkScreenSize()) {
 			showModal('Your screen size is not large enough to use the preview mode.');
-			// ДОБАВИТЬ ВЫХОД ИЗ ПРЕВЬЮ РЕЖИМА
+			endPreviewMode();
 		}
 	}
 }
