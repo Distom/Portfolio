@@ -152,6 +152,7 @@ body {
 
 .main {
   flex: 1 1 auto;
+  position: relative;
 }
 
 .header__title {
@@ -409,6 +410,11 @@ body {
   }
 }
 
+.markup {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
 .markup_preview .markup__container {
   height: 100vh;
 }
@@ -483,9 +489,6 @@ body {
   gap: 15px;
   flex-wrap: wrap;
   transition: top 0.3s;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
 }
 .markup__card {
   display: block;
@@ -495,6 +498,16 @@ body {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+}
+@media (max-width: 1000px) {
+  .markup__card {
+    flex: 0 1 calc(50% - 8px);
+  }
+}
+@media (max-width: 550px) {
+  .markup__card {
+    flex: 0 1 100%;
+  }
 }
 .markup__cards-buttons {
   display: none;
@@ -649,7 +662,7 @@ body {
 .preview-block__device {
   position: relative;
   text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease-out;
 }
 .preview-block__device_rotated {
   transform: rotate(-90deg);
@@ -696,11 +709,11 @@ body {
   top: 43px;
   left: 165px;
   width: 786px;
-  height: 492px;
+  height: 493px;
 }
 .preview-block__device_macbook .preview-block__iframe-wrapper .preview-block__iframe {
   width: 1442px;
-  height: 903px;
+  height: 905px;
   transform: scale(0.545) translate(-41.73%, -41.73%);
 }
 @media (max-width: 1315px) {
@@ -773,6 +786,9 @@ body {
 .preview-block__device-image {
   display: none;
 }
+.preview-block__device-image_macbook {
+  width: 100%;
+}
 .preview-block__device-image_ipad {
   height: 730px;
 }
@@ -809,11 +825,6 @@ body {
 }
 .preview-block__button-wrapper_selected .preview-block__button_rotate {
   display: block;
-}
-@media (max-height: 725px) {
-  .preview-block__button-wrapper[data-device=ipad] .preview-block__button_rotate {
-    display: none;
-  }
 }
 .preview-block__button {
   background: transparent;
@@ -892,6 +903,38 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
+}
+
+.react {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.react__container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.react__text {
+  font-size: 4rem;
+}
+@media (max-width: 1000px) {
+  .react__text {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 750px) {
+  .react__text {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 450px) {
+  .react__text {
+    font-size: 1.5rem;
+  }
 }
 
 .footer {

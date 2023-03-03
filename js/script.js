@@ -16,7 +16,7 @@ window.addEventListener('resize', onResize);
 
 function preview(event) {
 	let button = event.target;
-	if (!button.classList.contains('preview-button')) return;
+	if (!button.classList.contains('card__button_preview')) return;
 
 	if (!checkScreenSize()) {
 		showModal('You need to use a device with a larger screen size to enter the preview mode. Also, if you have a large zoom setting, you can try to reduce it.');
@@ -26,19 +26,134 @@ function preview(event) {
 	document.querySelector('.card_selected')?.classList.remove('card_selected');
 	let card = button.closest('.card');
 	card.classList.add('card_selected');
+	let iframe = document.querySelector('.preview-block__iframe');
+	iframe.src = card.querySelector('.card__button_open').href;
 
-	if (!previewOn) {
-		let markup = document.querySelector('.markup');
-		markup.classList.add('markup_preview');
-		markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
-		document.body.style.overflow = 'hidden';
+	if (!previewOn) startPreviewMode(card);
+}
 
-		let cards = document.querySelector('.markup__cards');
-		cards.style.top = '';
-		setCenterCard(card);
+function startPreviewMode(startCard) {
+	let startCardsProperties = getCardsProperties();
+	let cards = document.querySelector('.markup__cards');
+	cards.style.top = '';
+	cards.style.transition = startCard.style.transition = 'all 0s';
 
-		previewOn = true;
+	let markup = document.querySelector('.markup');
+	markup.classList.add('markup_preview');
+
+	let userScrollY = scrollY;
+	markup.scrollIntoView({ block: 'start' });
+	setCenterCard(startCard);
+	showCards(startCardsProperties, startCard);
+	render().then(() => cards.style.transition = startCard.style.transition = '');
+	scrollTo(0, userScrollY);
+	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
+
+	endScroll().then(() => document.body.style.overflow = 'hidden');
+	showPreviewBlock();
+	previewOn = true;
+}
+
+function endScroll() {
+	let prevScrollY = null;
+	let frequency = 50;
+	return new Promise(resolve => {
+		let interval = setInterval(() => {
+			if (scrollY == prevScrollY) {
+				resolve();
+				clearInterval(interval);
+			}
+			prevScrollY = scrollY;
+		}, frequency);
+	});
+}
+
+function showCards(startCardsProperties, startCard) {
+	let endCardsProperties = getCardsProperties();
+	let cardsElem = document.querySelector('.markup__cards');
+	let cards = document.querySelectorAll('.markup__card');
+
+	Array.from(cards).forEach((card, index) => {
+		document.body.append(card);
+		card.style.position = 'absolute';
+		let scale = card == startCard ? activeCardScale : 1;
+
+		let animation = card.animate([
+			{
+				top: startCardsProperties.get(card).top + 'px',
+				left: startCardsProperties.get(card).left + 'px',
+				width: startCardsProperties.get(card).width + 'px',
+				height: startCardsProperties.get(card).height + 'px',
+				padding: '26px',
+			},
+			{
+				top: endCardsProperties.get(card).top - endCardsProperties.get(card).height / 2 + 'px',
+				left: endCardsProperties.get(card).left + 'px',
+				width: endCardsProperties.get(card).width * scale + 'px',
+				height: endCardsProperties.get(card).height * scale + 'px',
+				padding: '4px',
+			}
+		],
+			{
+				duration: 500,
+				easing: 'ease-in-out',
+			});
+
+		animation.addEventListener('finish', () => {
+			cardsElem.append(card);
+			card.style.position = '';
+		}, { once: true });
+	});
+}
+
+function getCardsProperties() {
+	let cardsArr = Array.from(document.querySelectorAll('.markup__card'));
+	let cardsProperties = new Map();
+
+	cardsArr.forEach((card, index) => {
+		let rect = getAbsoluteBoundingClientRect(card);
+		cardsProperties.set(card, {
+			top: rect.top + card.offsetHeight / 2,
+			left: rect.left,
+			width: card.offsetWidth,
+			height: card.offsetHeight,
+		});
+	});
+
+	return cardsProperties;
+}
+
+function getAbsoluteBoundingClientRect(elem) {
+	let rect = elem.getBoundingClientRect();
+
+	return {
+		top: rect.top + scrollY,
+		left: rect.left + scrollX,
+		right: rect.right + scrollX,
+		bottom: rect.bottom + scrollX,
 	}
+}
+
+function showPreviewBlock() {
+	let previewBlock = document.querySelector('.markup__preview-block');
+	let top = previewBlock.getBoundingClientRect().top;
+	let left = previewBlock.getBoundingClientRect().left;
+
+	previewBlock.animate([
+		{
+			position: 'fixed',
+			top: innerHeight + previewBlock.clientHeight / 2 + 'px',
+			left: left + 'px',
+		},
+		{
+			position: 'fixed',
+			top: top + previewBlock.clientHeight / 2 + 'px',
+			left: left + 'px',
+		}
+	], {
+		duration: 300,
+		easing: 'ease-out'
+	});
 }
 
 function setCenterCard(card) {
@@ -126,6 +241,7 @@ async function switchPreviewDevice(event) {
 
 	// remove rotate transition on switching devices
 	deviceBlock.style.transition = 'none';
+	await render();
 	deviceBlock.classList.remove('preview-block__device_rotated');
 	await render();
 	deviceBlock.style.transition = '';
@@ -136,8 +252,15 @@ function rotateDevice(event) {
 	if (!button) return;
 
 	let deviceBlock = document.querySelector('.preview-block__device');
-
 	let iframeWrapper = document.querySelector('.preview-block__iframe-wrapper');
+	let buttonWrapper = button.closest('.preview-block__button-wrapper');
+
+	if (buttonWrapper.dataset.device == 'ipad' && innerHeight < 725) {
+		console.log('stop-rotate');
+		showModal("Your device's screen height is not high enough to use this feature. If you have a large zoom setting, you can try to reduce it.");
+		return;
+	}
+
 	let iframe = document.querySelector('.preview-block__iframe');
 
 	// add rotation delay for screen content
@@ -171,14 +294,16 @@ function checkScreenSize() {
 
 function showModal(innerHTML) {
 	let modal = document.querySelector('.modal');
+	if (modal.open) return;
 	document.querySelector('.modal__text').innerHTML = innerHTML;
 	let scrollWidth = window.innerWidth - document.documentElement.clientWidth;
 	modal.showModal();
 
+	let isHidden = document.body.style.overflow;
 	document.body.style.paddingRight = scrollWidth + 'px';
-	document.body.style.overflow = 'hidden';
+	if (!isHidden) document.body.style.overflow = 'hidden';
 	modal.addEventListener('close', () => {
-		document.body.style.overflow = '';
+		if (!isHidden) document.body.style.overflow = '';
 		document.body.style.paddingRight = '';
 	}, { once: true });
 }

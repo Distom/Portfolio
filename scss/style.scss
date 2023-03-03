@@ -78,6 +78,7 @@ body {
 
 .main {
 	flex: 1 1 auto;
+	position: relative;
 }
 
 
@@ -381,11 +382,12 @@ body {
 //--------------------------------------
 
 .markup {
+	user-select: none;
+
 	&__container {}
 
-
-
 	&_preview {
+
 		.markup {
 			&__container {
 				height: 100vh;
@@ -475,7 +477,6 @@ body {
 		gap: 15px;
 		flex-wrap: wrap;
 		transition: top 0.3s;
-		user-select: none;
 	}
 
 	&__card {
@@ -486,6 +487,14 @@ body {
 		background: $transBack;
 		box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
 		border-radius: 10px;
+
+		@media (max-width: 1000px) {
+			flex: 0 1 calc(50% - 8px);
+		}
+
+		@media (max-width: 550px) {
+			flex: 0 1 100%;
+		}
 	}
 
 	&__cards-buttons {
@@ -664,7 +673,7 @@ body {
 	&__device {
 		position: relative;
 		text-align: center;
-		transition: transform 0.3s;
+		transition: transform 0.3s ease-out;
 
 		&_rotated {
 			transform: rotate(-90deg);
@@ -722,11 +731,11 @@ body {
 				top: 43px;
 				left: 165px;
 				width: 786px;
-				height: 492px;
+				height: 493px;
 
 				.preview-block__iframe {
 					width: 1442px;
-					height: 903px;
+					height: 905px;
 					transform: scale(0.545) translate(-41.73%, -41.73%);
 				}
 			}
@@ -813,6 +822,11 @@ body {
 	&__device-image {
 		display: none;
 
+
+		&_macbook {
+			width: 100%;
+		}
+
 		&_ipad {
 			height: 730px;
 		}
@@ -856,14 +870,6 @@ body {
 
 			.preview-block__button_rotate {
 				display: block;
-			}
-		}
-
-		&[data-device="ipad"] {
-			@media (max-height: 725px) {
-				.preview-block__button_rotate {
-					display: none;
-				}
 			}
 		}
 	}
@@ -964,6 +970,40 @@ body {
 
 
 //---------------------------------------
+
+.react {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	&__container {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__text {
+		font-size: 4rem;
+
+		@media (max-width: 1000px) {
+			font-size: 3rem;
+		}
+
+		@media (max-width: 750px) {
+			font-size: 2rem;
+		}
+
+		@media (max-width: 450px) {
+			font-size: 1.5rem;
+		}
+	}
+}
+
+//------------------------------------------
+
 
 .footer {
 	text-align: center;
