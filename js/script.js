@@ -14,6 +14,21 @@ document.addEventListener('click', switchPreviewDevice);
 document.addEventListener('click', rotateDevice);
 document.addEventListener('wheel', scrollCards);
 window.addEventListener('resize', onResize);
+runRotateProperty();
+
+
+function runRotateProperty() {
+	let deg = 0;
+	let step = 2;
+	setInterval(() => {
+		requestAnimationFrame(() => {
+			if (deg < -360 || deg > 360) {
+				step *= -1;
+			}
+			document.documentElement.style.setProperty('--rotate', `${deg += step}deg`);
+		});
+	}, 20);
+}
 
 function preview(event) {
 	let button = event.target;
