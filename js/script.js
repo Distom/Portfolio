@@ -44,13 +44,24 @@ function startPreviewMode(startCard) {
 
 	let userScrollY = scrollY;
 	markup.scrollIntoView({ block: 'start' });
+
+	let previewBlock = document.querySelector('.preview-block');
+	previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px)`;
+	console.log(document.documentElement.clientWidth);
+	if (innerWidth <= 1315) {
+		previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px + 15px)`;
+	}
+
 	setCenterCard(startCard);
 	moveCards(startCardsProperties, startCard);
 	render().then(() => cards.style.transition = startCard.style.transition = '');
 	scrollTo(0, userScrollY);
 	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
 
-	endScroll().then(() => document.body.style.overflow = 'hidden');
+	endScroll().then(() => {
+		document.body.style.overflow = 'hidden';
+		previewBlock.style.right = '';
+	});
 	movePreviewBlock();
 	previewOn = true;
 
@@ -77,6 +88,7 @@ async function endPreviewMode() {
 	let markupHeight = markup.clientHeight;
 	markup.classList.remove('markup_preview');
 	scrollTo(0, 0);
+	compensateScrollbar();
 
 	let cardsAnimation = moveCards(startCardsProperties, null, false);
 	render().then(() => cards.style.transition = '');
@@ -89,6 +101,7 @@ async function endPreviewMode() {
 	let scrollAnimation = endScroll();
 
 	await Promise.all([cardsAnimation, scrollAnimation]);
+	compensateScrollbar(false);
 	document.body.style.overflow = '';
 	markup.style.height = '';
 	document.querySelector('.card_selected').classList.remove('card_selected');
@@ -407,16 +420,36 @@ function showModal(innerHTML) {
 	let modal = document.querySelector('.modal');
 	if (modal.open) return;
 	document.querySelector('.modal__text').innerHTML = innerHTML;
-	let scrollWidth = window.innerWidth - document.documentElement.clientWidth;
 	modal.showModal();
 
 	let isHidden = document.body.style.overflow;
-	document.body.style.paddingRight = scrollWidth + 'px';
+	compensateScrollbar(true, true);
 	if (!isHidden) document.body.style.overflow = 'hidden';
 	modal.addEventListener('close', () => {
 		if (!isHidden) document.body.style.overflow = '';
-		document.body.style.paddingRight = '';
+		compensateScrollbar(false);
 	}, { once: true });
+}
+
+function compensateScrollbar(addPadding = true, currentScroll = false) {
+	let wrapper = document.querySelector('.wrapper');
+
+	if (!addPadding) {
+		wrapper.style.paddingRight = '';
+		return;
+	}
+
+	let scrollbarWidth = innerWidth - document.documentElement.offsetWidth;
+	if (!currentScroll) scrollbarWidth = getScrollbarWidth();
+	wrapper.style.paddingRight = scrollbarWidth + 'px';
+}
+
+function getScrollbarWidth() {
+	document.body.insertAdjacentHTML('beforeend', '<div id="scrollbarWidthTester" style="width: 100px; height: 20px; overflow: scroll;"></div>');
+	let scrollbarWidthTester = document.getElementById('scrollbarWidthTester');
+	let scrollbarWidth = scrollbarWidthTester.offsetWidth - scrollbarWidthTester.clientWidth;
+	scrollbarWidthTester.remove();
+	return scrollbarWidth;
 }
 
 let iframe = document.querySelector('.preview-block__iframe');

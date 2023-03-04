@@ -666,6 +666,9 @@ body {
   width: 1120px;
   max-height: 100vh;
   transform: translateY(-50%);
+  /* &_compensate-scrollbar {
+  	right: calc((100vw - 1300px) / 2);
+  } */
 }
 @media (max-width: 1315px) {
   .preview-block {
