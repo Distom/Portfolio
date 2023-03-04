@@ -58,7 +58,7 @@ async function switchTabs(event) {
 }
 
 function render(time) {
-	if (!time) return new Promise(resolve => requestAnimationFrame(resolve));
+	if (!time && time !== 0) return new Promise(resolve => requestAnimationFrame(resolve));
 	return new Promise(resolve => setTimeout(() => resolve(), time));
 }
 

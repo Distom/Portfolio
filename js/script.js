@@ -79,7 +79,7 @@ function startPreviewMode(startCard) {
 	movePreviewBlock();
 
 	let iframe = document.querySelector('.preview-block__iframe');
-	iframe.focus();
+	setTimeout(() => iframe.focus());
 	previewOn = true;
 
 	document.addEventListener('keydown', closePreviewKeyDown);
@@ -513,7 +513,6 @@ function cardFocus(event) {
 }
 
 async function cardFocusOut(event) {
-	console.log('out');
 	let card = event.target.closest('.markup__card');
 	setTimeout(() => {
 		if (card == focusedCard) return;
