@@ -6,7 +6,8 @@ const switchingCardDelay = 300;
 let previewOn = false;
 let isSwitchingCards = false;
 let isClosingPreviewMode = false;
-
+let focusedCard = null;
+let isActiveCardFocus = false;
 
 document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
@@ -15,7 +16,7 @@ document.addEventListener('click', rotateDevice);
 document.addEventListener('wheel', scrollCards);
 window.addEventListener('resize', onResize);
 runRotateProperty();
-
+cardFocusOn();
 
 function runRotateProperty() {
 	let deg = 0;
@@ -62,9 +63,6 @@ function startPreviewMode(startCard) {
 
 	let previewBlock = document.querySelector('.preview-block');
 	previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px)`;
-
-	let wrapper = document.querySelector('.wrapper');
-	wrapper.classList.add('wrapper_dark-background');
 
 	setCenterCard(startCard);
 	moveCards(startCardsProperties, startCard);
@@ -114,9 +112,6 @@ async function endPreviewMode() {
 	let startCardsProperties = getCardsProperties();
 	let cards = document.querySelector('.markup__cards');
 	cards.style.transition = 'all 0s';
-
-	let wrapper = document.querySelector('.wrapper');
-	wrapper.classList.remove('wrapper_dark-background');
 
 	let userScrollY = scrollY;
 	let markup = document.querySelector('.markup');
@@ -384,6 +379,8 @@ function onResize() {
 			showModal('Your screen size is not large enough to use the preview mode.');
 			endPreviewMode();
 		}
+	} else if (!isActiveCardFocus) {
+		cardFocusOn();
 	}
 }
 
@@ -490,9 +487,6 @@ function getScrollbarWidth() {
 	return scrollbarWidth;
 }
 
-document.addEventListener('focusin', cardFocus);
-let focusedCard = null;
-
 function cardFocus(event) {
 	if (event.target.classList.contains('markup__card')) {
 		let card = event.target;
@@ -520,6 +514,12 @@ async function cardFocusOut(event) {
 		card.removeEventListener('focusout', cardFocusOut);
 		card.tabIndex = 0;
 	});
+}
+
+function cardFocusOn() {
+	if (!checkScreenSize()) return;
+	document.addEventListener('focusin', cardFocus);
+	isActiveCardFocus = true;
 }
 
 let iframe = document.querySelector('.preview-block__iframe');

@@ -119,7 +119,7 @@ body {
   overflow: clip;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(100deg, #984D38 -30%, #181e41 65%, #181E41 80%, #984D38 500%);
+  background: linear-gradient(90deg, #984D38 -30%, #181e41 65%, #181E41 80%, #984D38 500%);
 }
 
 [class*=__container] {
