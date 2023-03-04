@@ -77,6 +77,9 @@ function startPreviewMode(startCard) {
 		previewBlock.style.right = '';
 	});
 	movePreviewBlock();
+
+	let iframe = document.querySelector('.preview-block__iframe');
+	iframe.focus();
 	previewOn = true;
 
 	document.addEventListener('keydown', closePreviewKeyDown);
@@ -459,6 +462,7 @@ function showModal(innerHTML) {
 	let isHidden = document.body.style.overflow;
 	compensateScrollbar(true, true);
 	if (!isHidden) document.body.style.overflow = 'hidden';
+
 	modal.addEventListener('close', () => {
 		if (!isHidden) document.body.style.overflow = '';
 		compensateScrollbar(false);
@@ -484,6 +488,39 @@ function getScrollbarWidth() {
 	let scrollbarWidth = scrollbarWidthTester.offsetWidth - scrollbarWidthTester.clientWidth;
 	scrollbarWidthTester.remove();
 	return scrollbarWidth;
+}
+
+document.addEventListener('focusin', cardFocus);
+let focusedCard = null;
+
+function cardFocus(event) {
+	if (event.target.classList.contains('markup__card')) {
+		let card = event.target;
+		card.classList.add('card_focused');
+
+		let firstButton = card.querySelector('.card__button');
+		firstButton.focus();
+
+		card.setAttribute('tabindex', '');
+		card.addEventListener('focusout', cardFocusOut);
+		focusedCard = card;
+	} else if (focusedCard && !event.target.closest('.markup__card')) {
+		focusedCard.classList.remove('card_focused');
+		focusedCard.removeEventListener('focusout', cardFocusOut);
+		focusedCard.tabIndex = 0;
+		focusedCard = null;
+	}
+}
+
+async function cardFocusOut(event) {
+	console.log('out');
+	let card = event.target.closest('.markup__card');
+	setTimeout(() => {
+		if (card == focusedCard) return;
+		card.classList.remove('card_focused');
+		card.removeEventListener('focusout', cardFocusOut);
+		card.tabIndex = 0;
+	});
 }
 
 let iframe = document.querySelector('.preview-block__iframe');

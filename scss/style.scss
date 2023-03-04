@@ -69,6 +69,15 @@ body {
 	position: relative;
 }
 
+a:focus-visible,
+button:focus-visible,
+input[type=button]:focus-visible,
+input[type=submit]:focus-visible,
+input[type=checkbox]:focus-visible,
+[role=button]:focus-visible {
+	outline: 1px solid rgb(126, 126, 126);
+}
+
 
 //---------------------------------------------
 .header {
@@ -121,7 +130,8 @@ body {
 		transition: background 1s;
 
 		&_selected,
-		&:hover {
+		&:hover,
+		&:focus {
 			background: $greenDark;
 		}
 	}
@@ -217,7 +227,8 @@ body {
 	&__email {
 		transition: color 0.3s;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			color: $greenLight;
 		}
 	}
@@ -243,7 +254,9 @@ body {
 	}
 
 	&__social-media-link {
-		&:hover {
+
+		&:hover,
+		&:focus {
 			.photo-block__social-media-icon path {
 				fill: $greenLight;
 			}
@@ -418,7 +431,8 @@ body {
 					filter: hue-rotate(var(--rotate)) contrast(175%);
 				}
 
-				&:hover {
+				&:hover,
+				&:focus {
 					.card__image {
 						opacity: 0.6;
 						filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
@@ -518,7 +532,8 @@ body {
 		transition: opacity 0.3s;
 		animation: none;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			opacity: 1;
 
 			.markup__cards-button-icon {
@@ -588,7 +603,8 @@ body {
 		font-size: 1rem;
 		transition: background 0.3s;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background: rgba(255, 255, 255, 0.2);
 		}
 	}
@@ -624,7 +640,8 @@ body {
 		opacity: 0;
 	}
 
-	&:hover {
+	&:hover,
+	&_focused {
 		.card__image {
 			opacity: 0.6;
 			filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
@@ -646,9 +663,7 @@ body {
 		&::before {
 			opacity: 0.3;
 		}
-
 	}
-
 }
 
 .transparent-pseudo {
@@ -881,7 +896,8 @@ body {
 		opacity: 0.4;
 		transition: opacity 0.3s;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			opacity: 1;
 		}
 
@@ -893,7 +909,8 @@ body {
 			left: -30px;
 			transition: transform 0.3s;
 
-			&:hover {
+			&:hover,
+			&:focus {
 				opacity: 0.7;
 				transform: rotate(-30deg);
 			}
@@ -934,7 +951,8 @@ body {
 				}
 			}
 
-			&:hover {
+			&:hover,
+			&:focus {
 				opacity: 0.7;
 			}
 
@@ -1027,7 +1045,8 @@ body {
 		border-radius: 10px;
 		transition: background 0.3s;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background-color: $greenDark;
 		}
 	}

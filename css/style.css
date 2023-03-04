@@ -146,6 +146,15 @@ body {
   position: relative;
 }
 
+a:focus-visible,
+button:focus-visible,
+input[type=button]:focus-visible,
+input[type=submit]:focus-visible,
+input[type=checkbox]:focus-visible,
+[role=button]:focus-visible {
+  outline: 1px solid rgb(126, 126, 126);
+}
+
 .header__title {
   font-weight: 700;
   font-size: 4rem;
@@ -188,7 +197,7 @@ body {
   width: 100%;
   transition: background 1s;
 }
-.header__menu-link_selected, .header__menu-link:hover {
+.header__menu-link_selected, .header__menu-link:hover, .header__menu-link:focus {
   background: #399988;
 }
 
@@ -272,7 +281,7 @@ body {
 .photo-block__phone, .photo-block__email {
   transition: color 0.3s;
 }
-.photo-block__phone:hover, .photo-block__email:hover {
+.photo-block__phone:hover, .photo-block__phone:focus, .photo-block__email:hover, .photo-block__email:focus {
   color: #599939;
 }
 .photo-block__social-media-list {
@@ -295,7 +304,7 @@ body {
 .photo-block__social-media-item {
   display: inline-block;
 }
-.photo-block__social-media-link:hover .photo-block__social-media-icon path {
+.photo-block__social-media-link:hover .photo-block__social-media-icon path, .photo-block__social-media-link:focus .photo-block__social-media-icon path {
   fill: #599939;
 }
 .photo-block__social-media-icon {
@@ -440,11 +449,11 @@ body {
   opacity: 0.6;
   filter: hue-rotate(var(--rotate)) contrast(175%);
 }
-.markup_preview .card_selected:hover .card__image {
+.markup_preview .card_selected:hover .card__image, .markup_preview .card_selected:focus .card__image {
   opacity: 0.6;
   filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
 }
-.markup_preview .card_selected:hover::before {
+.markup_preview .card_selected:hover::before, .markup_preview .card_selected:focus::before {
   opacity: 1;
 }
 .markup_preview .card_selected:before {
@@ -529,10 +538,10 @@ body {
   transition: opacity 0.3s;
   animation: none;
 }
-.markup__cards-button:hover {
+.markup__cards-button:hover, .markup__cards-button:focus {
   opacity: 1;
 }
-.markup__cards-button:hover .markup__cards-button-icon {
+.markup__cards-button:hover .markup__cards-button-icon, .markup__cards-button:focus .markup__cards-button-icon {
   animation: arrowJamping 1s cubic-bezier(0.71, 0.06, 0.14, 0.97) infinite;
 }
 .markup__cards-button_top {
@@ -589,7 +598,7 @@ body {
   font-size: 1rem;
   transition: background 0.3s;
 }
-.card__button:hover {
+.card__button:hover, .card__button:focus {
   background: rgba(255, 255, 255, 0.2);
 }
 .card:before {
@@ -621,18 +630,18 @@ body {
   transition: opacity 1s;
   opacity: 0;
 }
-.card:hover .card__image {
+.card:hover .card__image, .card_focused .card__image {
   opacity: 0.6;
   filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
 }
-.card:hover .card__buttons {
+.card:hover .card__buttons, .card_focused .card__buttons {
   display: flex;
   opacity: 1;
 }
-.card:hover::before {
+.card:hover::before, .card_focused::before {
   opacity: 1;
 }
-.card:hover::before {
+.card:hover::before, .card_focused::before {
   opacity: 0.3;
 }
 
@@ -826,7 +835,7 @@ body {
   opacity: 0.4;
   transition: opacity 0.3s;
 }
-.preview-block__button:hover {
+.preview-block__button:hover, .preview-block__button:focus {
   opacity: 1;
 }
 .preview-block__button_rotate {
@@ -837,7 +846,7 @@ body {
   left: -30px;
   transition: transform 0.3s;
 }
-.preview-block__button_rotate:hover {
+.preview-block__button_rotate:hover, .preview-block__button_rotate:focus {
   opacity: 0.7;
   transform: rotate(-30deg);
 }
@@ -874,7 +883,7 @@ body {
   text-align: center;
   transition: font-size 0.1s;
 }
-.preview-block__button_close:hover {
+.preview-block__button_close:hover, .preview-block__button_close:focus {
   opacity: 0.7;
 }
 .preview-block__button_close:active {
@@ -951,7 +960,7 @@ body {
   border-radius: 10px;
   transition: background 0.3s;
 }
-.modal__button:hover {
+.modal__button:hover, .modal__button:focus {
   background-color: #399988;
 }
 
