@@ -47,10 +47,9 @@ function startPreviewMode(startCard) {
 
 	let previewBlock = document.querySelector('.preview-block');
 	previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px)`;
-	console.log(document.documentElement.clientWidth);
-	if (innerWidth <= 1315) {
-		previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px + 15px)`;
-	}
+
+	let wrapper = document.querySelector('.wrapper');
+	wrapper.classList.add('wrapper_dark-background');
 
 	setCenterCard(startCard);
 	moveCards(startCardsProperties, startCard);
@@ -65,23 +64,41 @@ function startPreviewMode(startCard) {
 	movePreviewBlock();
 	previewOn = true;
 
-	document.addEventListener('keydown', closePreview);
+	document.addEventListener('keydown', closePreviewKeyDown);
+	document.addEventListener('keyup', closePreviewKeyUp);
+	document.addEventListener('click', closePreviewClick);
 }
 
-function closePreview(event) {
+function closePreviewKeyDown(event) {
 	let key = event.code;
 	if (key != 'Escape') return;
+	let closeBtn = document.querySelector('.preview-block__button_close');
+	closeBtn.classList.add('preview-block__button_close_active');
+}
+
+function closePreviewKeyUp(event) {
+	let key = event.code;
+	if (key != 'Escape') return;
+	let closeBtn = document.querySelector('.preview-block__button_close');
+	closeBtn.classList.remove('preview-block__button_close_active');
+	endPreviewMode();
+}
+
+function closePreviewClick(event) {
+	let button = event.target.closest('.preview-block__button_close');
+	if (!button) return;
 	endPreviewMode();
 }
 
 async function endPreviewMode() {
 	if (isClosingPreviewMode) return;
 	isClosingPreviewMode = true;
-
-	document.removeEventListener('keydown', closePreview);
 	let startCardsProperties = getCardsProperties();
 	let cards = document.querySelector('.markup__cards');
 	cards.style.transition = 'all 0s';
+
+	let wrapper = document.querySelector('.wrapper');
+	wrapper.classList.remove('wrapper_dark-background');
 
 	let userScrollY = scrollY;
 	let markup = document.querySelector('.markup');
@@ -108,6 +125,9 @@ async function endPreviewMode() {
 	document.querySelector('.card_active').classList.remove('card_active');
 	previewOn = false;
 	isClosingPreviewMode = false;
+	document.removeEventListener('keyup', closePreviewKeyDown);
+	document.removeEventListener('keyup', closePreviewKeyUp);
+	document.removeEventListener('click', closePreviewClick);
 }
 
 function endScroll() {
@@ -351,9 +371,9 @@ function onResize() {
 
 
 async function switchPreviewDevice(event) {
-	let button = event.target.closest('.preview-block__button');
+	let button = event.target.closest('.preview-block__button_switch');
 	let buttonWrapper = event.target.closest('.preview-block__button-wrapper');
-	if (!buttonWrapper || !button || button.classList.contains('preview-block__button_rotate')) return;
+	if (!buttonWrapper || !button) return;
 
 	let prevSelectedButton = document.querySelector('.preview-block__button-wrapper_selected');
 	prevSelectedButton.classList.remove('preview-block__button-wrapper_selected');
@@ -380,7 +400,6 @@ function rotateDevice(event) {
 	let buttonWrapper = button.closest('.preview-block__button-wrapper');
 
 	if (buttonWrapper.dataset.device == 'ipad' && innerHeight < 725) {
-		console.log('stop-rotate');
 		showModal("Your device's screen height is not high enough to use this feature. If you have a large zoom setting, you can try to reduce it.");
 		return;
 	}
@@ -455,6 +474,10 @@ function getScrollbarWidth() {
 let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.onload = function () {
-	iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
-	iframe.contentDocument.body.classList.add('scrollbar');
+	try {
+		iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
+		iframe.contentDocument.body.classList.add('scrollbar');
+	} catch {
+		console.log('iframe origin error');
+	}
 }

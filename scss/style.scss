@@ -401,7 +401,7 @@ body {
 				left: calc((100vw - 1300px) / 2 + 15px);
 
 				@media (max-width: 1315px) {
-					left: calc((100vw - 1300px) / 2 + 30px);
+					left: calc((100vw - 1300px) / 2 + 45px);
 				}
 			}
 
@@ -684,19 +684,10 @@ body {
 .preview-block {
 	position: fixed;
 	top: 50%;
-	//right: calc((100vw - 1300px) / 2 - 15px);
 	right: calc((100vw - 1300px) / 2);
 	width: 1120px;
 	max-height: 100vh;
 	transform: translateY(-50%);
-
-	/* &_compensate-scrollbar {
-		right: calc((100vw - 1300px) / 2);
-	} */
-
-	@media (max-width: 1315px) {
-		right: calc((100vw - 1300px) / 2 + 15px);
-	}
 
 	&__device {
 		position: relative;
@@ -886,6 +877,10 @@ body {
 		transform: translateY(-50%);
 		right: 40px;
 		gap: 32px;
+
+		@media (max-width: 1315px) {
+			right: 55px;
+		}
 	}
 
 	&__button-wrapper {
@@ -926,6 +921,77 @@ body {
 			}
 		}
 
+		&_close {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: -100px;
+			left: 0;
+			background-color: #fff;
+			border-radius: 10px;
+			transform: scale(0.9);
+			transition: transform 0.1s, opacity 0.1s;
+
+			.preview-block__icon {
+				position: absolute;
+				width: 44px;
+				height: 44px;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 8px;
+				background: #181E41;
+				transition: all 0.1s;
+
+				.preview-block__button-text {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					color: $titleColor;
+					letter-spacing: 1px;
+					font-size: 0.8rem;
+					text-align: center;
+					transition: all 0.1s;
+				}
+			}
+
+			&:hover {
+				opacity: 0.7;
+			}
+
+			&:active {
+				transform: scale(0.85);
+				opacity: 0.7;
+
+				.preview-block__icon {
+					background: rgba(24, 30, 65, 0.85);
+					width: 42px;
+					height: 42px;
+					border-radius: 7px;
+				}
+
+				.preview-block__button-text {
+					font-size: 0.75rem;
+				}
+			}
+
+			&_active {
+				transform: scale(0.85);
+				opacity: 0.7;
+
+				.preview-block__icon {
+					background: rgba(24, 30, 65, 0.85);
+					width: 42px;
+					height: 42px;
+					border-radius: 7px;
+				}
+
+				.preview-block__button-text {
+					font-size: 0.75rem;
+				}
+			}
+		}
 
 	}
 
