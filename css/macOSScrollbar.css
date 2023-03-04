@@ -40,6 +40,10 @@
 }
 
 @media (max-width: 1300px) {
+	html {
+		scrollbar-width: none;
+	}
+
 	.scrollbar::-webkit-scrollbar {
 		width: 4px;
 		height: 4px;
