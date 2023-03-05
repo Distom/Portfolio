@@ -8,6 +8,7 @@ let isSwitchingCards = false;
 let isClosingPreviewMode = false;
 let focusedCard = null;
 let isActiveCardFocus = false;
+let startPreviewScrollY = 0;
 
 document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
@@ -43,23 +44,35 @@ function preview(event) {
 	document.querySelector('.card_selected')?.classList.remove('card_selected');
 	let card = button.closest('.card');
 	card.classList.add('card_selected');
-	let iframe = document.querySelector('.preview-block__iframe');
-	iframe.src = card.querySelector('.card__button_open').href;
+
+	let interval = setInterval(() => {
+		if (!previewOn) return;
+		setSrcInIframe(card.querySelector('.card__button_open').href);
+		clearInterval(interval);
+	}, 10);
 
 	if (!previewOn) startPreviewMode(card);
 }
 
+function setSrcInIframe(src) {
+	let iframe = document.querySelector('.preview-block__iframe');
+	iframe.src = src;
+}
+
 function startPreviewMode(startCard) {
+	startPreviewScrollY = scrollY;
+	let markup = document.querySelector('.markup');
+	let startMarkupHeight = markup.clientHeight;
 	let startCardsProperties = getCardsProperties();
 	let cards = document.querySelector('.markup__cards');
 	cards.style.top = '';
 	cards.style.transition = startCard.style.transition = 'all 0s';
 
-	let markup = document.querySelector('.markup');
 	markup.classList.add('markup_preview');
+	markup.style.height += startMarkupHeight + 'px';
 
 	let userScrollY = scrollY;
-	markup.scrollIntoView({ block: 'start' });
+	markup.scrollIntoView({ block: 'end' });
 
 	let previewBlock = document.querySelector('.preview-block');
 	previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px)`;
@@ -68,17 +81,18 @@ function startPreviewMode(startCard) {
 	moveCards(startCardsProperties, startCard);
 	render().then(() => cards.style.transition = startCard.style.transition = '');
 	scrollTo(0, userScrollY);
-	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
+	markup.scrollIntoView({ block: 'end', behavior: 'smooth' });
 
+
+	let iframeWrapper = document.querySelector('.preview-block__iframe-wrapper');
 	endScroll().then(() => {
 		document.body.style.overflow = 'hidden';
 		previewBlock.style.right = '';
+		iframeWrapper.focus();
+		previewOn = true;
 	});
 	movePreviewBlock();
 
-	let iframe = document.querySelector('.preview-block__iframe');
-	setTimeout(() => iframe.focus());
-	previewOn = true;
 
 	document.addEventListener('keydown', closePreviewKeyDown);
 	document.addEventListener('keyup', closePreviewKeyUp);
@@ -125,12 +139,13 @@ async function endPreviewMode() {
 	markup.classList.add('markup_preview');
 	scrollTo(0, userScrollY);
 	await movePreviewBlock(false);
-	scrollTo({ top: 0, left: 0, behavior: "smooth" });
+	scrollTo({ top: startPreviewScrollY, left: 0, behavior: "smooth" });
 	markup.classList.remove('markup_preview');
 	markup.style.height = markupHeight + 'px';
 	let scrollAnimation = endScroll();
 
 	await Promise.all([cardsAnimation, scrollAnimation]);
+	setSrcInIframe('');
 	compensateScrollbar(false);
 	document.body.style.overflow = '';
 	markup.style.height = '';
