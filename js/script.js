@@ -9,7 +9,9 @@ let isClosingPreviewMode = false;
 let focusedCard = null;
 let isActiveCardFocus = false;
 let startPreviewScrollY = 0;
+let iframe = document.querySelector('.preview-block__iframe');
 
+iframe.addEventListener('load', addScrollbar);
 document.addEventListener('click', preview);
 document.addEventListener('click', switchActiveCard);
 document.addEventListener('click', switchPreviewDevice);
@@ -537,9 +539,7 @@ function cardFocusOn() {
 	isActiveCardFocus = true;
 }
 
-let iframe = document.querySelector('.preview-block__iframe');
-
-iframe.onload = function () {
+function addScrollbar() {
 	try {
 		iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 		iframe.contentDocument.body.classList.add('scrollbar');

@@ -25,6 +25,10 @@ $greenLight: #599939;
 	}
 }
 
+.no-browser-icons {
+	pointer-events: none;
+}
+
 
 html {
 	font-size: 20px;
@@ -576,6 +580,7 @@ input[type=checkbox]:focus-visible,
 
 	&__image {
 		transition: all 1s;
+		pointer-events: none;
 	}
 
 	&__buttons {
@@ -841,7 +846,7 @@ input[type=checkbox]:focus-visible,
 
 	&__device-image {
 		display: none;
-
+		pointer-events: none;
 
 		&_macbook {
 			width: 100%;
@@ -877,7 +882,7 @@ input[type=checkbox]:focus-visible,
 		left: 0.5%;
 		width: 99%;
 		height: 99%;
-		background-color: #808080;
+		background: linear-gradient(90deg, #984D38 -30%, #181e41 65%, #181E41 80%, #984D38 500%);
 		display: flex;
 		justify-content: center;
 		align-items: center;
