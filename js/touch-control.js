@@ -1,6 +1,7 @@
 'use strict'
 
 let touchModeOn = false;
+let addedTouchControl = false;
 
 let startScroll = 0;
 let startY = 0;
@@ -11,10 +12,41 @@ let lastCursorY = 0;
 let cursorMonitoringFrequency = 17;
 let scrollDirection = 0;
 let lastScrollAnim = null;
-let runCursorMonitoringThrottled = throttle(runCursorMonitoring, cursorMonitoringFrequency);
 
-iframe.addEventListener('pointerenter', startTouchMode);
-iframe.addEventListener('pointerleave', endTouchMode);
+let startTouchChords = [0, 0];
+
+let runCursorMonitoringThrottled = throttle(runCursorMonitoring, cursorMonitoringFrequency);
+let iframe = document.querySelector('.preview-block__iframe');
+
+
+function addTouchControl() {
+	addedTouchControl = true;
+
+	if (iframe?.contentDocument.readyState == 'loading') {
+		iframe.addEventListener('load', () => addListeners());
+	} else {
+		addListeners();
+	}
+
+	function addListeners() {
+		iframe.addEventListener('pointerenter', startTouchMode);
+		iframe.addEventListener('pointerleave', endTouchMode);
+	}
+}
+
+function removeTouchControl() {
+	iframe.removeEventListener('pointerenter', startTouchMode);
+	iframe.removeEventListener('pointerleave', endTouchMode);
+	iframe.contentDocument.removeEventListener('pointerdown', startTouch);
+	iframe.contentDocument.removeEventListener('pointermove', runCursorMonitoringThrottled);
+	iframe.contentDocument.removeEventListener('pointerup', endTouch);
+	iframe.contentDocument.removeEventListener('dragstart', event => event.preventDefault());
+	iframe.contentWindow.removeEventListener('keydown', stopScrollAnimOnKeyScroll);
+	iframe.contentWindow.removeEventListener('wheel', stopScrollAnimOnWheel);
+	iframe.contentDocument.removeEventListener('pointermove', scrollIframe);
+	addedTouchControl = false;
+	touchModeOn = false;
+}
 
 function startTouchMode() {
 	iframe.contentDocument.addEventListener('pointerdown', startTouch);
@@ -37,8 +69,17 @@ function stopScrollAnimOnWheel() {
 
 function startTouch(event) {
 	lastScrollAnim?.stop();
+	startTouchChords = [event.clientX, event.clientY];
+
 	startScroll = iframe.contentWindow.scrollY;
 	startY = event.clientY;
+	iframe.contentDocument.addEventListener('pointermove', checkStartTouchScroll);
+}
+
+function checkStartTouchScroll(event) {
+	let distance = Math.sqrt((startTouchChords[0] - event.clientX) ** 2 + (startTouchChords[1] - event.clientY) ** 2);
+	if (distance < 5) return;
+	iframe.contentDocument.removeEventListener('pointermove', checkStartTouchScroll);
 	iframe.contentDocument.addEventListener('pointermove', scrollIframe);
 }
 
@@ -50,11 +91,11 @@ function scrollIframe(event) {
 	});
 }
 
-function endTouch() {
-	console.log(cursorSpeed);
+function endTouch(event) {
 	if (cursorSpeed > 0.2) {
 		lastScrollAnim = runScroll(cursorSpeed);
 	}
+	iframe.contentDocument.removeEventListener('pointermove', checkStartTouchScroll);
 	iframe.contentDocument.removeEventListener('pointermove', scrollIframe);
 }
 
@@ -63,8 +104,8 @@ function endTouchMode() {
 }
 
 function runCursorMonitoring(event) {
-	let distance = Math.abs(lastCursorY - event.clientY);
-	cursorSpeed = distance / cursorMonitoringFrequency;
+	let distanceY = Math.abs(lastCursorY - event.clientY);
+	cursorSpeed = distanceY / cursorMonitoringFrequency;
 	scrollDirection = event.clientY - lastCursorY != 0 ? event.clientY - lastCursorY : scrollDirection;
 
 	lastCursorY = event.clientY;

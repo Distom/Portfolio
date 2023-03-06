@@ -7,7 +7,6 @@ let previewOn = false;
 let isSwitchingCards = false;
 let isClosingPreviewMode = false;
 let startPreviewScrollY = 0;
-let iframe = document.querySelector('.preview-block__iframe');
 
 iframe.addEventListener('load', addScrollbar);
 document.addEventListener('click', preview);
@@ -263,7 +262,7 @@ function getCardsProperties() {
 	let cardsArr = Array.from(document.querySelectorAll('.markup__card'));
 	let cardsProperties = new Map();
 
-	cardsArr.forEach((card, index) => {
+	cardsArr.forEach(card => {
 		let rect = getAbsoluteBoundingClientRect(card);
 
 		cardsProperties.set(card, {
@@ -383,9 +382,6 @@ function updateButtons(card) {
 	}
 }
 
-
-
-
 async function switchPreviewDevice(event) {
 	let button = event.target.closest('.preview-block__button_switch');
 	let buttonWrapper = event.target.closest('.preview-block__button-wrapper');
@@ -395,9 +391,18 @@ async function switchPreviewDevice(event) {
 	prevSelectedButton.classList.remove('preview-block__button-wrapper_selected');
 	buttonWrapper.classList.add('preview-block__button-wrapper_selected');
 
+	let prevDevice = prevSelectedButton.dataset.device;
+	let newDevice = buttonWrapper.dataset.device;
+
 	let deviceBlock = document.querySelector('.preview-block__device');
-	deviceBlock.classList.remove(`preview-block__device_${prevSelectedButton.dataset.device}`);
-	deviceBlock.classList.add(`preview-block__device_${buttonWrapper.dataset.device}`);
+	deviceBlock.classList.remove(`preview-block__device_${prevDevice}`);
+	deviceBlock.classList.add(`preview-block__device_${newDevice}`);
+
+	if ((newDevice == 'ipad' || newDevice == 'iphone')) {
+		if (!addedTouchControl) addTouchControl();
+	} else {
+		removeTouchControl();
+	}
 
 	// remove rotate transition on switching devices
 	deviceBlock.style.transition = 'none';
