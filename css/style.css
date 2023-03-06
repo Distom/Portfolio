@@ -103,10 +103,6 @@ h6 {
     transform: translateY(0px);
   }
 }
-.no-browser-icons {
-  pointer-events: none;
-}
-
 html {
   font-size: 20px;
 }

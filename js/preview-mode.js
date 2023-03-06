@@ -6,8 +6,6 @@ const switchingCardDelay = 300;
 let previewOn = false;
 let isSwitchingCards = false;
 let isClosingPreviewMode = false;
-let focusedCard = null;
-let isActiveCardFocus = false;
 let startPreviewScrollY = 0;
 let iframe = document.querySelector('.preview-block__iframe');
 
@@ -17,9 +15,8 @@ document.addEventListener('click', switchActiveCard);
 document.addEventListener('click', switchPreviewDevice);
 document.addEventListener('click', rotateDevice);
 document.addEventListener('wheel', scrollCards);
-window.addEventListener('resize', onResize);
 runRotateProperty();
-cardFocusOn();
+
 
 function runRotateProperty() {
 	let deg = 0;
@@ -64,17 +61,15 @@ function setSrcInIframe(src) {
 function startPreviewMode(startCard) {
 	startPreviewScrollY = scrollY;
 	let markup = document.querySelector('.markup');
-	let startMarkupHeight = markup.clientHeight;
 	let startCardsProperties = getCardsProperties();
 	let cards = document.querySelector('.markup__cards');
 	cards.style.top = '';
 	cards.style.transition = startCard.style.transition = 'all 0s';
 
 	markup.classList.add('markup_preview');
-	markup.style.height += startMarkupHeight + 'px';
+	markup.style.height = document.documentElement.clientHeight * 2 + 'px';
 
-	let userScrollY = scrollY;
-	markup.scrollIntoView({ block: 'end' });
+	markup.scrollIntoView({ block: 'start' });
 
 	let previewBlock = document.querySelector('.preview-block');
 	previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px)`;
@@ -82,8 +77,8 @@ function startPreviewMode(startCard) {
 	setCenterCard(startCard);
 	moveCards(startCardsProperties, startCard);
 	render().then(() => cards.style.transition = startCard.style.transition = '');
-	scrollTo(0, userScrollY);
-	markup.scrollIntoView({ block: 'end', behavior: 'smooth' });
+	scrollTo(0, startPreviewScrollY);
+	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
 
 
 	let iframeWrapper = document.querySelector('.preview-block__iframe-wrapper');
@@ -388,18 +383,7 @@ function updateButtons(card) {
 	}
 }
 
-function onResize() {
-	if (previewOn) {
-		setCenterCard(document.querySelector('.card_active'));
 
-		if (!checkScreenSize()) {
-			showModal('Your screen size is not large enough to use the preview mode.');
-			endPreviewMode();
-		}
-	} else if (!isActiveCardFocus) {
-		cardFocusOn();
-	}
-}
 
 
 async function switchPreviewDevice(event) {
@@ -504,46 +488,20 @@ function getScrollbarWidth() {
 	return scrollbarWidth;
 }
 
-function cardFocus(event) {
-	if (event.target.classList.contains('markup__card')) {
-		let card = event.target;
-		card.classList.add('card_focused');
-
-		let firstButton = card.querySelector('.card__button');
-		firstButton.focus();
-
-		card.setAttribute('tabindex', '');
-		card.addEventListener('focusout', cardFocusOut);
-		focusedCard = card;
-	} else if (focusedCard && !event.target.closest('.markup__card')) {
-		focusedCard.classList.remove('card_focused');
-		focusedCard.removeEventListener('focusout', cardFocusOut);
-		focusedCard.tabIndex = 0;
-		focusedCard = null;
+function addScrollbar() {
+	try {
+		iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="../css/MacOSScrollbar.css">');
+		iframe.contentDocument.body.classList.add('scrollbar');
+	} catch {
+		console.log('iframe origin error');
 	}
 }
 
-async function cardFocusOut(event) {
-	let card = event.target.closest('.markup__card');
-	setTimeout(() => {
-		if (card == focusedCard) return;
-		card.classList.remove('card_focused');
-		card.removeEventListener('focusout', cardFocusOut);
-		card.tabIndex = 0;
-	});
-}
-
-function cardFocusOn() {
-	if (!checkScreenSize()) return;
-	document.addEventListener('focusin', cardFocus);
-	isActiveCardFocus = true;
-}
-
-function addScrollbar() {
+/* function addScrollbar() {
 	try {
 		iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 		iframe.contentDocument.body.classList.add('scrollbar');
 	} catch {
 		console.log('iframe origin error');
 	}
-}
+} */
