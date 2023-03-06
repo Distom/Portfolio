@@ -44,6 +44,10 @@
 		scrollbar-width: none;
 	}
 
+	body {
+		user-select: none;
+	}
+
 	.scrollbar::-webkit-scrollbar {
 		width: 4px;
 		height: 4px;
