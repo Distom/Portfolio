@@ -86,6 +86,7 @@ function startPreviewMode(startCard) {
 
 	let iframeWrapper = document.querySelector('.preview-block__iframe-wrapper');
 	endScroll().then(() => {
+		if (markup.getBoundingClientRect().top > 0) markup.scrollIntoView();
 		document.body.style.overflow = 'hidden';
 		previewBlock.style.right = '';
 		iframeWrapper.focus();
