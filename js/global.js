@@ -6,7 +6,6 @@ let isActiveCardFocus = false;
 window.addEventListener('resize', onResize);
 cardFocusOn();
 
-
 function onResize() {
 	if (previewOn) {
 		setCenterCard(document.querySelector('.card_active'));
@@ -24,29 +23,23 @@ function onResize() {
 
 function cardFocus(event) {
 	if (event.target.classList.contains('markup__card')) {
+		removeOldFocus();
+
 		let card = event.target;
 		card.classList.add('card_focused');
 
-		let firstButton = card.querySelector('.card__button');
-		firstButton.focus();
-
 		card.setAttribute('tabindex', '');
-		card.addEventListener('focusout', cardFocusOut);
 		focusedCard = card;
 	} else if (focusedCard && !event.target.closest('.markup__card')) {
-		focusedCard.classList.remove('card_focused');
-		focusedCard.removeEventListener('focusout', cardFocusOut);
-		focusedCard.tabIndex = 0;
+		removeOldFocus();
 		focusedCard = null;
 	}
 }
 
-async function cardFocusOut(event) {
-	let card = event.target.closest('.markup__card');
-	setTimeout(() => {
-		if (card == focusedCard) return;
+function removeOldFocus() {
+	let cards = Array.from(document.querySelectorAll('.card_focused'));
+	cards.forEach(card => {
 		card.classList.remove('card_focused');
-		card.removeEventListener('focusout', cardFocusOut);
 		card.tabIndex = 0;
 	});
 }
