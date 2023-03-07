@@ -48,6 +48,10 @@
 		user-select: none;
 	}
 
+	* {
+		cursor: url('../img/markup/cursor-sensor.png') 10 10, grab !important;
+	}
+
 	.scrollbar::-webkit-scrollbar {
 		width: 4px;
 		height: 4px;

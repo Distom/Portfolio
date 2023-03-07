@@ -69,6 +69,7 @@ function stopScrollAnimOnWheel() {
 
 function startTouch(event) {
 	lastScrollAnim?.stop();
+	if (checkIframeOverflow()) return;
 	startTouchChords = [event.clientX, event.clientY];
 
 	startScroll = iframe.contentWindow.scrollY;
@@ -92,7 +93,7 @@ function scrollIframe(event) {
 }
 
 function endTouch(event) {
-	if (cursorSpeed > 0.2) {
+	if (cursorSpeed > 0.2 && !checkIframeOverflow()) {
 		lastScrollAnim = runScroll(cursorSpeed);
 	}
 	iframe.contentDocument.removeEventListener('pointermove', checkStartTouchScroll);
@@ -109,6 +110,23 @@ function runCursorMonitoring(event) {
 	scrollDirection = event.clientY - lastCursorY != 0 ? event.clientY - lastCursorY : scrollDirection;
 
 	lastCursorY = event.clientY;
+}
+
+function checkIframeOverflow() {
+	let html = iframe.contentDocument;
+	return /* isOverflowHidden(html) ||  */isOverflowHidden(html.body);
+
+	function isOverflowHidden(elem) {
+		return isHidden(getOverflow(elem));
+	}
+
+	function isHidden(value) {
+		return value == 'hidden';
+	}
+
+	function getOverflow(elem) {
+		return iframe.contentWindow.getComputedStyle(elem).overflow;
+	}
 }
 
 function throttle(func, ms) {
@@ -139,7 +157,7 @@ function throttle(func, ms) {
 function runScroll(cursorSpeed) {
 	cursorSpeed = Math.min(cursorSpeed, 20);
 	let direction = scrollDirection > 0 ? 1 : -1;
-	let to = cursorSpeed * 2 * direction;
+	let to = cursorSpeed * 3 * direction;
 	return new Animate({
 		duration: 1000 * Math.sqrt(cursorSpeed),
 		timing: makeEaseOut(circ),
