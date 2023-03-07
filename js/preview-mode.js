@@ -506,18 +506,19 @@ function getScrollbarWidth() {
 
 function addScrollbar() {
 	try {
-		iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="../css/MacOSScrollbar.css">');
+		iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 		iframe.contentDocument.body.classList.add('scrollbar');
 	} catch {
 		console.log('iframe origin error');
 	}
 }
 
-/* function addScrollbar() {
+/* function addScrollbar() {  // local styles for tests
 	try {
-		iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
+		iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="../css/MacOSScrollbar.css">');
 		iframe.contentDocument.body.classList.add('scrollbar');
 	} catch {
 		console.log('iframe origin error');
 	}
 } */
+
