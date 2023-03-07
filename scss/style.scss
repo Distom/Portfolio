@@ -432,8 +432,11 @@ input[type=checkbox]:focus-visible,
 				&:hover,
 				&:focus-visible {
 					.card__image {
-						opacity: 0.6;
-						filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
+						filter: hue-rotate(var(--rotate)) contrast(175%);
+					}
+
+					.card__image-wrapper {
+						filter: blur(3px);
 					}
 
 					&::before {
@@ -517,7 +520,7 @@ input[type=checkbox]:focus-visible,
 		}
 
 		@media (max-width: 1315px) {
-			left: calc((100vw - 1300px) / 2 + 15px);
+			left: calc((100vw - 1300px) / 2 + 30px);
 		}
 	}
 
@@ -574,6 +577,7 @@ input[type=checkbox]:focus-visible,
 		padding: 0 0 160% 0;
 		border-radius: 10px;
 		overflow: hidden;
+		transition: filter 1s;
 	}
 
 	&__image {
@@ -653,14 +657,6 @@ input[type=checkbox]:focus-visible,
 
 		.card__buttons {
 			visibility: visible;
-			opacity: 1;
-		}
-
-		&::before
-
-		/* ,
-		&::after */
-			{
 			opacity: 1;
 		}
 

@@ -449,8 +449,10 @@ input[type=checkbox]:focus-visible,
   filter: hue-rotate(var(--rotate)) contrast(175%);
 }
 .markup_preview .card_selected:hover .card__image, .markup_preview .card_selected:focus-visible .card__image {
-  opacity: 0.6;
-  filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
+  filter: hue-rotate(var(--rotate)) contrast(175%);
+}
+.markup_preview .card_selected:hover .card__image-wrapper, .markup_preview .card_selected:focus-visible .card__image-wrapper {
+  filter: blur(3px);
 }
 .markup_preview .card_selected:hover::before, .markup_preview .card_selected:focus-visible::before {
   opacity: 1;
@@ -524,7 +526,7 @@ input[type=checkbox]:focus-visible,
 }
 @media (max-width: 1315px) {
   .markup__cards-buttons {
-    left: calc((100vw - 1300px) / 2 + 15px);
+    left: calc((100vw - 1300px) / 2 + 30px);
   }
 }
 .markup__cards-button {
@@ -572,6 +574,7 @@ input[type=checkbox]:focus-visible,
   padding: 0 0 160% 0;
   border-radius: 10px;
   overflow: hidden;
+  transition: filter 1s;
 }
 .card__image {
   transition: all 1s;
@@ -640,9 +643,6 @@ input[type=checkbox]:focus-visible,
 }
 .card:hover .card__buttons, .card_focused .card__buttons {
   visibility: visible;
-  opacity: 1;
-}
-.card:hover::before, .card_focused::before {
   opacity: 1;
 }
 .card:hover::before, .card_focused::before {
