@@ -170,7 +170,6 @@ function runScroll(cursorSpeed) {
 		duration: 1000 * Math.sqrt(cursorSpeed),
 		timing: makeEaseOut(circ),
 		draw(progress) {
-			console.log('draw');
 			let onPageTop = isMinScroll() && direction > 0;
 			let onPageDown = isMaxScroll() && direction < 0;
 			if (onPageTop || onPageDown) lastScrollAnim.stop();
