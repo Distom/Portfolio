@@ -114,7 +114,7 @@ function runCursorMonitoring(event) {
 
 function checkIframeOverflow() {
 	let html = iframe.contentDocument;
-	return /* isOverflowHidden(html) ||  */isOverflowHidden(html.body);
+	return isOverflowHidden(html.body) || isOverflowHidden(html.documentElement);
 
 	function isOverflowHidden(elem) {
 		return isHidden(getOverflow(elem));
@@ -158,13 +158,34 @@ function runScroll(cursorSpeed) {
 	cursorSpeed = Math.min(cursorSpeed, 20);
 	let direction = scrollDirection > 0 ? 1 : -1;
 	let to = cursorSpeed * 3 * direction;
+
+	let pageHeight = Math.max(
+		iframe.contentDocument.body.scrollHeight, iframe.contentDocument.documentElement.scrollHeight,
+		iframe.contentDocument.body.offsetHeight, iframe.contentDocument.documentElement.offsetHeight,
+		iframe.contentDocument.body.clientHeight, iframe.contentDocument.documentElement.clientHeight
+	);
+	let maxScroll = pageHeight - iframe.contentWindow.innerHeight;
+
 	return new Animate({
 		duration: 1000 * Math.sqrt(cursorSpeed),
 		timing: makeEaseOut(circ),
 		draw(progress) {
+			console.log('draw');
+			let onPageTop = isMinScroll() && direction > 0;
+			let onPageDown = isMaxScroll() && direction < 0;
+			if (onPageTop || onPageDown) lastScrollAnim.stop();
+
 			iframe.contentWindow.scrollBy(0, progress - (to / progress));
 		}
 	});
+
+	function isMaxScroll() {
+		return iframe.contentWindow.scrollY >= maxScroll - 1;
+	}
+
+	function isMinScroll() {
+		return iframe.contentWindow.scrollY == 0;
+	}
 }
 
 class Animate {

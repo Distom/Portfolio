@@ -74,25 +74,35 @@ function startPreviewMode(startCard) {
 	previewBlock.style.right = `calc((100vw - 1300px) / 2 - ${getScrollbarWidth()}px)`;
 
 	setCenterCard(startCard);
-	moveCards(startCardsProperties, startCard);
+	let cardsAnimation = moveCards(startCardsProperties, startCard);
+	cardsAnimation.then(() => {
+		toggleCardsSwitchButtonsOpacity();
+	});
 	render().then(() => cards.style.transition = startCard.style.transition = '');
 	scrollTo(0, startPreviewScrollY);
-	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
 
+	markup.scrollIntoView({ block: 'start', behavior: 'smooth' });
+	let scrollAnimation = endScroll();
 
 	let iframeWrapper = document.querySelector('.preview-block__iframe-wrapper');
 	endScroll().then(() => {
 		document.body.style.overflow = 'hidden';
 		previewBlock.style.right = '';
 		iframeWrapper.focus();
-		previewOn = true;
 	});
 	movePreviewBlock();
 
+	Promise.all([cardsAnimation, scrollAnimation]).then(() => {
+		document.addEventListener('keydown', closePreviewKeyDown);
+		document.addEventListener('keyup', closePreviewKeyUp);
+		document.addEventListener('click', closePreviewClick);
+		previewOn = true;
+	});
+}
 
-	document.addEventListener('keydown', closePreviewKeyDown);
-	document.addEventListener('keyup', closePreviewKeyUp);
-	document.addEventListener('click', closePreviewClick);
+function toggleCardsSwitchButtonsOpacity() {
+	let buttons = document.querySelector('.markup__cards-buttons');
+	buttons.classList.toggle('markup__cards-buttons_visible');
 }
 
 function closePreviewKeyDown(event) {
@@ -129,6 +139,7 @@ async function endPreviewMode() {
 	markup.classList.remove('markup_preview');
 	scrollTo(0, 0);
 	compensateScrollbar();
+	toggleCardsSwitchButtonsOpacity();
 
 	let cardsAnimation = moveCards(startCardsProperties, null, false);
 	render().then(() => cards.style.transition = '');

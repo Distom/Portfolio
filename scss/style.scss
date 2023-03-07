@@ -130,7 +130,7 @@ input[type=checkbox]:focus-visible,
 
 		&_selected,
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			background: $greenDark;
 		}
 	}
@@ -227,7 +227,7 @@ input[type=checkbox]:focus-visible,
 		transition: color 0.3s;
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			color: $greenLight;
 		}
 	}
@@ -255,7 +255,7 @@ input[type=checkbox]:focus-visible,
 	&__social-media-link {
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			.photo-block__social-media-icon path {
 				fill: $greenLight;
 			}
@@ -407,7 +407,6 @@ input[type=checkbox]:focus-visible,
 
 			&__cards-buttons {
 				display: block;
-				opacity: 1;
 			}
 
 			&__preview-block {
@@ -431,7 +430,7 @@ input[type=checkbox]:focus-visible,
 				}
 
 				&:hover,
-				&:focus {
+				&:focus-visible {
 					.card__image {
 						opacity: 0.6;
 						filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
@@ -513,6 +512,10 @@ input[type=checkbox]:focus-visible,
 		position: fixed;
 		left: calc((100vw - 1300px) / 2);
 
+		&_visible {
+			opacity: 1;
+		}
+
 		@media (max-width: 1315px) {
 			left: calc((100vw - 1300px) / 2 + 15px);
 		}
@@ -532,7 +535,7 @@ input[type=checkbox]:focus-visible,
 		animation: none;
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			opacity: 1;
 
 			.markup__cards-button-icon {
@@ -585,10 +588,11 @@ input[type=checkbox]:focus-visible,
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		display: none;
+		display: flex;
+		visibility: hidden;
 		opacity: 0;
 		align-items: center;
-		transition: opacity 0.3s;
+		transition: opacity 0.3s 0.1s, visibility 0s 0.1s;
 	}
 
 	&__button {
@@ -604,7 +608,7 @@ input[type=checkbox]:focus-visible,
 		transition: background 0.3s;
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			background: rgba(255, 255, 255, 0.2);
 		}
 	}
@@ -648,7 +652,7 @@ input[type=checkbox]:focus-visible,
 		}
 
 		.card__buttons {
-			display: flex;
+			visibility: visible;
 			opacity: 1;
 		}
 
@@ -877,7 +881,7 @@ input[type=checkbox]:focus-visible,
 		left: 0.5%;
 		width: 99%;
 		height: 99%;
-		background: linear-gradient(90deg, #984D38 -30%, #181e41 65%, #181E41 80%, #984D38 500%);
+		background: linear-gradient(90deg, #dddddd -30%, #797979 65%, #787879 80%, #c0c0c0 500%);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -921,7 +925,7 @@ input[type=checkbox]:focus-visible,
 		transition: opacity 0.3s;
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			opacity: 1;
 		}
 
@@ -934,7 +938,7 @@ input[type=checkbox]:focus-visible,
 			transition: transform 0.3s;
 
 			&:hover,
-			&:focus {
+			&:focus-visible {
 				opacity: 0.7;
 				transform: rotate(-30deg);
 			}
@@ -976,7 +980,7 @@ input[type=checkbox]:focus-visible,
 			}
 
 			&:hover,
-			&:focus {
+			&:focus-visible {
 				opacity: 0.7;
 			}
 
@@ -1070,7 +1074,7 @@ input[type=checkbox]:focus-visible,
 		transition: background 0.3s;
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			background-color: $greenDark;
 		}
 	}
