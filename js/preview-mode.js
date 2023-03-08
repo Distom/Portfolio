@@ -108,7 +108,7 @@ function toggleCardsSwitchButtonsOpacity() {
 
 function closePreviewKeyDown(event) {
 	let key = event.code;
-	if (key != 'Escape') return;
+	if (key != 'Escape' || isClosingPreviewMode) return;
 	let closeBtn = document.querySelector('.preview-block__button_close');
 	closeBtn.classList.add('preview-block__button_close_active');
 }
@@ -161,9 +161,11 @@ async function endPreviewMode() {
 	document.querySelector('.card_active').classList.remove('card_active');
 	previewOn = false;
 	isClosingPreviewMode = false;
-	document.removeEventListener('keyup', closePreviewKeyDown);
+	document.removeEventListener('keydown', closePreviewKeyDown);
 	document.removeEventListener('keyup', closePreviewKeyUp);
 	document.removeEventListener('click', closePreviewClick);
+	let closeBtn = document.querySelector('.preview-block__button_close');
+	closeBtn.classList.remove('preview-block__button_close_active');
 }
 
 function endScroll() {
