@@ -53,7 +53,7 @@ function route(event) {
 	if (!link) return;
 
 	event.preventDefault();
-	window.history.pushState({}, '', serverPath + link.href);
+	window.history.pushState({}, '', serverPath + link.getAttribute('href'));
 	handleLocation();
 }
 
