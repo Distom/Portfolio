@@ -8,9 +8,9 @@ let routs = {
 	'/markup': {
 		route: '/pages/markup.html',
 		scriptLinks: [
-			'js/touch-control.js',
-			'js/preview-mode.js',
-			'js/global.js',
+			'/js/touch-control.js',
+			'/js/preview-mode.js',
+			'/js/global.js',
 		],
 		scriptsAdded: false,
 	},
@@ -53,7 +53,7 @@ function route(event) {
 	if (!link) return;
 
 	event.preventDefault();
-	window.history.pushState({}, '', link.href);
+	window.history.pushState({}, '', serverPath + link.href);
 	handleLocation();
 }
 
