@@ -7,10 +7,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Portfolio</title>
 	<link rel="stylesheet" href="css/style.css">
+	<script defer src="js/menu-router.js"></script>
 	<script defer src="js/menu-navigation.js"></script>
-	<script defer src="js/touch-control.js"></script>
+	<!-- <script defer src="js/touch-control.js"></script>
 	<script defer src="js/preview-mode.js"></script>
-	<script defer src="js/global.js"></script>
+	<script defer src="js/global.js"></script> -->
 </head>
 
 <body>
@@ -25,23 +26,23 @@
 				<nav class="header__menu">
 					<ul class="header__menu-list">
 						<li class="header__menu-item">
-							<a href="#" class="header__menu-link header__menu-link_selected" data-tab-name="resume">Resume</a>
+							<a href="/" class="header__menu-link header__menu-link_selected" data-tab-name="resume">Resume</a>
 						</li>
 						<li class="header__menu-item">
-							<a href="#" class="header__menu-link" data-tab-name="markup">Markup</a>
+							<a href="/markup" class="header__menu-link" data-tab-name="markup">Markup</a>
 						</li>
 						<li class="header__menu-item">
-							<a href="#" class="header__menu-link" data-tab-name="react">React</a>
+							<a href="/react" class="header__menu-link" data-tab-name="react">React</a>
 						</li>
 						<li class="header__menu-item">
-							<a href="#" class="header__menu-link">...</a>
+							<a href="/empty" class="header__menu-link">...</a>
 						</li>
 					</ul>
 				</nav>
 			</div>
 		</header>
 		<main class="main">
-			<section class="resume" data-tab-body="resume">
+			<!-- <section class="resume" data-tab-body="resume">
 				<div class="resume__container">
 					<div class="resume__photo-block photo-block">
 						<div class="photo-block__photo-wrapper _bgi">
@@ -310,7 +311,7 @@
 				<div class="react__container">
 					<div class="react__text">coming soon...</div>
 				</div>
-			</section>
+			</section> -->
 		</main>
 		<footer class="footer">
 			<div class="footer__container">footer</div>

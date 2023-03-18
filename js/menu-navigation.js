@@ -1,6 +1,6 @@
 'use strict'
 
-let menu = document.querySelector('.header__menu');
+/* let menu = document.querySelector('.header__menu');
 let main = document.querySelector('.main');
 let isSwitchingTabs = false;
 let transitionTime = 300;
@@ -55,7 +55,7 @@ async function switchTabs(event) {
 		prevSelectedTab.style.transition = '';
 		prevSelectedTab.style.opacity = '';
 	}
-}
+} */
 
 function render(time) {
 	if (!time && time !== 0) return new Promise(resolve => requestAnimationFrame(resolve));
