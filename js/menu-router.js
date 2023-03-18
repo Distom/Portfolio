@@ -49,7 +49,7 @@ function addServerPathProxy(obj) {
 			let value = target[property];
 			if (typeof value == 'object' && value != null) {
 				return addServerPathProxy(value);
-			} else if (typeof value == 'string') {
+			} else if (typeof value == 'string' && property != 'cacheHTML') {
 				return serverPath + value;
 			} else {
 				return value;
