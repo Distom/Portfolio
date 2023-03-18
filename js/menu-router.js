@@ -47,7 +47,7 @@ function addServerPathProxy(obj) {
 	return new Proxy(obj, {
 		get(target, property) {
 			let value = target[property];
-			if (typeof value == 'object') {
+			if (typeof value == 'object' && value != null) {
 				return addServerPathProxy(value);
 			} else if (typeof value == 'string') {
 				return serverPath + value;
