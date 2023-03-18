@@ -1,6 +1,7 @@
 'use strict'
 
 let menu = document.querySelector('.header__menu');
+let serverPath = location.pathname.match(/.+(?=\/)/) || '';
 let routs = {
 	'/': '/pages/resume.html',
 	'/markup': {
@@ -14,7 +15,31 @@ let routs = {
 	},
 	'/react': '/pages/react.html',
 	'/empty': '/pages/react.html',
+	test: {
+		test: {
+			test: {
+				test: '/DIMA'
+			}
+		}
+	}
 }
+
+function addServerPathProxy(obj) {
+	return new Proxy(obj, {
+		get(target, property) {
+			let value = target[property];
+			if (typeof value == 'object') {
+				return addServerPathProxy(value);
+			} else if (typeof value == 'string') {
+				return serverPath + value;
+			} else {
+				return value;
+			}
+		}
+	});
+}
+
+routs = addServerPathProxy(routs);
 
 menu.addEventListener('click', route);
 window.addEventListener('popstate', handleLocation);
@@ -41,7 +66,7 @@ function route(event) {
 async function handleLocation() {
 	let path = window.location.pathname;
 	let route = routs[path].route || routs[path] || routs['/'];
-
+	console.log(route);
 	let html = await fetch(route)
 		.catch(err => console.log('before' + err))
 		.then(response => response.text())
