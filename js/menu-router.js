@@ -3,10 +3,14 @@
 let menu = document.querySelector('.header__menu');
 let serverPathReg = new RegExp('.+(?=/)');
 let serverPath = location.pathname.match(serverPathReg) || '';
-let routs = {
-	'/': '/pages/resume.html',
+let routes = {
+	'/': {
+		route: '/pages/resume.html',
+		cacheHTML: null,
+	},
 	'/markup': {
 		route: '/pages/markup.html',
+		cacheHTML: null,
 		scriptLinks: [
 			'/js/touch-control.js',
 			'/js/preview-mode.js',
@@ -14,9 +18,30 @@ let routs = {
 		],
 		scriptsAdded: false,
 	},
-	'/react': '/pages/react.html',
-	'/empty': '/pages/react.html',
+	'/react': {
+		route: '/pages/react.html',
+		cacheHTML: null,
+	},
+	'/empty': {
+		route: '/pages/react.html',
+		cacheHTML: null,
+	},
 }
+
+routes = addServerPathProxy(routes);
+
+menu.addEventListener('click', route);
+window.addEventListener('popstate', handleLocation);
+window.addEventListener('load', () => {
+	let originalRoute = localStorage.getItem('originalRoute');
+
+	if (originalRoute) {
+		window.history.pushState({}, '', originalRoute);
+		localStorage.removeItem('originalRoute');
+	}
+
+	handleLocation();
+});
 
 function addServerPathProxy(obj) {
 	return new Proxy(obj, {
@@ -33,21 +58,6 @@ function addServerPathProxy(obj) {
 	});
 }
 
-routs = addServerPathProxy(routs);
-
-menu.addEventListener('click', route);
-window.addEventListener('popstate', handleLocation);
-window.addEventListener('load', () => {
-	let originalRoute = localStorage.getItem('originalRoute');
-
-	if (originalRoute) {
-		window.history.pushState({}, '', originalRoute);
-		localStorage.removeItem('originalRoute');
-	}
-
-	handleLocation();
-});
-
 function route(event) {
 	let link = event.target.closest('.header__menu-link');
 	if (!link) return;
@@ -60,22 +70,27 @@ function route(event) {
 async function handleLocation() {
 	let path = window.location.pathname;
 	path = path.replace(serverPathReg, '');
-	let route = routs[path].route || routs[path] || routs['/'];
-	console.log(route);
+	if (!routes[path]) return;
+	let route = routes[path].route || routes[path] || routes['/'];
 
-	let html = await fetch(route)
-		.catch(err => console.log('before' + err))
-		.then(response => response.text())
-		.catch(err => console.log('after' + err));
+	let html = routes[path].cacheHTML;
+	if (!html) {
+		html = await fetch(route)
+			.then(response => response.text())
+			.catch(err => console.warn('page load error' + err));
+	}
+	routes[path].cacheHTML = html;
 	document.querySelector('.main').innerHTML = html;
 
-	let scriptLinks = routs[path].scriptLinks;
-	if (scriptLinks && !routs[path].scriptsAdded) {
+	let scriptLinks = routes[path].scriptLinks;
+	if (scriptLinks && !routes[path].scriptsAdded) {
 		let promises = [];
 		scriptLinks.forEach(link => promises.push(loadScript(link)));
-		routs[path].scriptsAdded = true;
+		routes[path].scriptsAdded = true;
 		/* 		await Promise.all(promises);
 				console.log('all scripts load'); */
+		//Сделать чтоб кнопки на карточках были неактивны до
+		//загрузки скриптов
 	}
 }
 

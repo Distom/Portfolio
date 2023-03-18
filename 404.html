@@ -10,7 +10,6 @@
 
 <body>
 	<script>
-		alert('404');
 		localStorage.setItem('originalRoute', location.pathname);
 		let serverPathReg = new RegExp('.+(?=/)');
 		let serverPath = location.pathname.match(serverPathReg) || '';
