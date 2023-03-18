@@ -79,7 +79,7 @@ async function handleLocation() {
 			.then(response => response.text())
 			.catch(err => console.warn('page load error' + err));
 	}
-	routes[path].cacheHTML = html;
+	//routes[path].cacheHTML = html;
 	document.querySelector('.main').innerHTML = html;
 
 	let scriptLinks = routes[path].scriptLinks;
