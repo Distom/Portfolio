@@ -1,7 +1,8 @@
 'use strict'
 
 let menu = document.querySelector('.header__menu');
-let serverPath = location.pathname.match(/.+(?=\/)/) || '';
+let serverPathReg = new RegExp('.+(?=/)');
+let serverPath = location.pathname.match(serverPathReg) || '';
 let routs = {
 	'/': '/pages/resume.html',
 	'/markup': {
@@ -15,13 +16,6 @@ let routs = {
 	},
 	'/react': '/pages/react.html',
 	'/empty': '/pages/react.html',
-	test: {
-		test: {
-			test: {
-				test: '/DIMA'
-			}
-		}
-	}
 }
 
 function addServerPathProxy(obj) {
@@ -65,8 +59,10 @@ function route(event) {
 
 async function handleLocation() {
 	let path = window.location.pathname;
+	path = path.replace(serverPathReg, '');
 	let route = routs[path].route || routs[path] || routs['/'];
 	console.log(route);
+
 	let html = await fetch(route)
 		.catch(err => console.log('before' + err))
 		.then(response => response.text())
