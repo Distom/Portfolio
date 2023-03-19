@@ -43,10 +43,10 @@ window.addEventListener('load', async () => {
 		localStorage.removeItem('originalRoute');
 	}
 
-	await handleLocation(false);
+	handleLocation(false);
 
 	let currentPath = getCurrentPath();
-	document.querySelector('.main').innerHTML = routes[currentPath].cacheHTML;
+	document.querySelector('.main').innerHTML = await routes[currentPath].cacheHTML;
 	loadScripts(currentPath);
 
 	let currentMenuBtn = document.querySelector(`.header__menu-link[href="${currentPath}"]`);
@@ -62,28 +62,16 @@ function addServerPathProxy(obj) {
 	return new Proxy(obj, {
 		get(target, property) {
 			let value = target[property];
-			if (typeof value == 'object' && value != null) {
+			if (property == 'cacheHTML') {
+				return value;
+			} else if (typeof value == 'object' && value != null) {
 				return addServerPathProxy(value);
-			} else if (typeof value == 'string' && property != 'cacheHTML') {
+			} else if (typeof value == 'string') {
 				return serverPath + value;
 			} else {
 				return value;
 			}
 		},
-
-		set(target, property, value) {
-			if (property == 'cacheHTML') {
-				let parser = new DOMParser();
-				let html = parser.parseFromString(value, 'text/html');
-				let images = html.querySelectorAll('.card__image');
-				let imagesSrc = Array.from(images).map(image => image.src);
-
-				caches.open('cacheHTML').then(cache => {
-					cache.addAll(imagesSrc);
-				});
-			}
-			return Reflect.set(...arguments);
-		}
 	});
 }
 
@@ -98,7 +86,7 @@ function route(event) {
 	handleLocation();
 }
 
-async function handleLocation(switchTabs = true) {
+function handleLocation(switchTabs = true) {
 	if (isSwitchingTabs) return;
 	let path = getCurrentPath();
 	let route = getRoute(path);
@@ -107,7 +95,7 @@ async function handleLocation(switchTabs = true) {
 	}
 
 	if (!routes[path].cacheHTML) {
-		routes[path].cacheHTML = await fetch(route)
+		routes[path].cacheHTML = fetch(route)
 			.then(response => response.text())
 			.catch(err => console.warn('page load error' + err));
 	}
@@ -153,6 +141,7 @@ function loadScript(url) {
 async function setTabHTML() {
 	let tabContent = await routes[getCurrentPath()].cacheHTML;
 	document.querySelector('.main').innerHTML = tabContent;
+	return render();
 }
 
 async function switchingTabsAnim() {
@@ -183,6 +172,7 @@ async function switchingTabsAnim() {
 
 		await render(transitionTime);
 
+		prevSelectedTab.style.display = 'none';
 		prevSelectedTab.style.transition = '';
 		prevSelectedTab.style.opacity = '';
 	}
