@@ -3,6 +3,8 @@
 let menu = document.querySelector('.header__menu');
 let isSwitchingTabs = false;
 let transitionTime = 300;
+let markupScriptsLoaded;
+let addedTouchControl = false;
 
 let serverPathReg = new RegExp('.+(?=/)');
 let serverPath = location.pathname.match(serverPathReg) || '';
@@ -119,8 +121,7 @@ function loadScripts(routesKey) {
 		let promises = [];
 		scriptLinks.forEach(link => promises.push(loadScript(link)));
 		routes[routesKey].scriptsAdded = true;
-		/* 		await Promise.all(promises);
-				console.log('all scripts load'); */
+		markupScriptsLoaded = Promise.all(promises);
 		//Сделать чтоб кнопки на карточках были неактивны до
 		//загрузки скриптов
 	}
@@ -159,7 +160,12 @@ async function switchingTabsAnim() {
 	link.classList.add('header__menu-link_selected');
 
 	await hideTab();
+	if (addedTouchControl) {
+		removeTouchControl();
+	}
 	await setTabHTML();
+	let event = new CustomEvent('newTabOpened', { bubbles: true });
+	document.dispatchEvent(event);
 	loadScripts(currentPath);
 	await showTab();
 
@@ -196,6 +202,3 @@ function render(time) {
 	if (!time && time !== 0) return new Promise(resolve => requestAnimationFrame(resolve));
 	return new Promise(resolve => setTimeout(() => resolve(), time));
 }
-
-
-

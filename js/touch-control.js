@@ -1,7 +1,6 @@
 'use strict'
 
 let touchModeOn = false;
-let addedTouchControl = false;
 
 let startScroll = 0;
 let startY = 0;

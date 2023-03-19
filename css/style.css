@@ -637,15 +637,15 @@ input[type=checkbox]:focus-visible,
   transition: opacity 1s;
   opacity: 0;
 }
-.card:hover .card__image, .card_focused .card__image {
+.card:hover .card__image, .card:focus-within .card__image {
   opacity: 0.6;
   filter: hue-rotate(var(--rotate)) blur(5px) contrast(175%);
 }
-.card:hover .card__buttons, .card_focused .card__buttons {
+.card:hover .card__buttons, .card:focus-within .card__buttons {
   visibility: visible;
   opacity: 1;
 }
-.card:hover::before, .card_focused::before {
+.card:hover::before, .card:focus-within::before {
   opacity: 0.3;
 }
 

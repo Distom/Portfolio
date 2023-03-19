@@ -7,20 +7,49 @@ let previewOn = false;
 let isSwitchingCards = false;
 let isClosingPreviewMode = false;
 let startPreviewScrollY = 0;
+let rotatePropertyInterval;
+let isPrevTabMarkup = true;
 
-iframe.addEventListener('load', addScrollbar);
-document.addEventListener('click', preview);
-document.addEventListener('click', switchActiveCard);
-document.addEventListener('click', switchPreviewDevice);
-document.addEventListener('click', rotateDevice);
-document.addEventListener('wheel', scrollCards);
-runRotateProperty();
+addPreviewModeListeners();
 
+document.addEventListener('newTabOpened', () => {
+	if (isMarkupTab()) {
+		addPreviewModeListeners()
+		isPrevTabMarkup = true;
+	} else if (!isMarkupTab() && isPrevTabMarkup) {
+		removePreviewModeListeners();
+		isPrevTabMarkup = false;
+	}
+});
+
+function isMarkupTab() {
+	return !!document.querySelector('.markup');
+}
+
+function addPreviewModeListeners() {
+	iframe = document.querySelector('.preview-block__iframe');
+	iframe.addEventListener('load', addScrollbar);
+	document.addEventListener('click', preview);
+	document.addEventListener('click', switchActiveCard);
+	document.addEventListener('click', switchPreviewDevice);
+	document.addEventListener('click', rotateDevice);
+	document.addEventListener('wheel', scrollCards);
+	runRotateProperty();
+}
+
+function removePreviewModeListeners() {
+	document.removeEventListener('click', preview);
+	document.removeEventListener('click', switchActiveCard);
+	document.removeEventListener('click', switchPreviewDevice);
+	document.removeEventListener('click', rotateDevice);
+	document.removeEventListener('wheel', scrollCards);
+	stopRotateProterty();
+}
 
 function runRotateProperty() {
 	let deg = 0;
 	let step = 2;
-	setInterval(() => {
+	rotatePropertyInterval = setInterval(() => {
 		requestAnimationFrame(() => {
 			if (deg < -360 || deg > 360) {
 				step *= -1;
@@ -28,6 +57,10 @@ function runRotateProperty() {
 			document.documentElement.style.setProperty('--rotate', `${deg += step}deg`);
 		});
 	}, 20);
+}
+
+function stopRotateProterty() {
+	clearInterval(rotatePropertyInterval);
 }
 
 function preview(event) {
@@ -512,7 +545,7 @@ function addScrollbar() {
 		iframe.contentDocument.head.insertAdjacentHTML('afterbegin', '<link rel="stylesheet" href="https://distom.github.io/Portfolio/css/macOSScrollbar.css">');
 		iframe.contentDocument.body.classList.add('scrollbar');
 	} catch {
-		console.log('iframe origin error');
+		console.warn('iframe origin error');
 	}
 }
 
@@ -521,7 +554,7 @@ function addScrollbar() {
 		iframe.contentDocument.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="../css/MacOSScrollbar.css">');
 		iframe.contentDocument.body.classList.add('scrollbar');
 	} catch {
-		console.log('iframe origin error');
+		console.warn('iframe origin error');
 	}
 } */
 
