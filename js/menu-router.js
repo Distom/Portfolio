@@ -69,6 +69,20 @@ function addServerPathProxy(obj) {
 			} else {
 				return value;
 			}
+		},
+
+		set(target, property, value) {
+			if (property == 'cacheHTML') {
+				let parser = new DOMParser();
+				let html = parser.parseFromString(value, 'text/html');
+				let images = html.querySelectorAll('.card__image');
+				let imagesSrc = Array.from(images).map(image => image.src);
+
+				caches.open('cacheHTML').then(cache => {
+					cache.addAll(imagesSrc);
+				});
+			}
+			return Reflect.set(...arguments);
 		}
 	});
 }
@@ -157,7 +171,6 @@ async function switchingTabsAnim() {
 
 	await hideTab();
 	await setTabHTML();
-	render();
 	loadScripts(currentPath);
 	await showTab();
 
