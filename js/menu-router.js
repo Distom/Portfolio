@@ -157,6 +157,7 @@ async function switchingTabsAnim() {
 
 	await hideTab();
 	await setTabHTML();
+	render();
 	loadScripts(currentPath);
 	await showTab();
 
