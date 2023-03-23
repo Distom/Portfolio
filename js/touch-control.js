@@ -155,6 +155,45 @@ function throttle(func, ms) {
 
 function runScroll(cursorSpeed) {
 	cursorSpeed = Math.min(cursorSpeed, 20);
+	let direction = scrollDirection > 0 ? -1 : 1;
+	let to = cursorSpeed * 8 * direction;
+	let duration = 300 * Math.sqrt(cursorSpeed);
+
+	let pageHeight = Math.max(
+		iframe.contentDocument.body.scrollHeight, iframe.contentDocument.documentElement.scrollHeight,
+		iframe.contentDocument.body.offsetHeight, iframe.contentDocument.documentElement.offsetHeight,
+		iframe.contentDocument.body.clientHeight, iframe.contentDocument.documentElement.clientHeight
+	);
+	let maxScroll = pageHeight - iframe.contentWindow.innerHeight;
+
+	return new Animate({
+		duration: duration,
+		timing: function (timeFraction) {
+			return timeFraction;
+		},
+		draw(progress) {
+			let onPageTop = isMinScroll() && direction < 0;
+			let onPageDown = isMaxScroll() && direction > 0;
+			if (onPageTop || onPageDown) lastScrollAnim.stop();
+			let step = to;
+			if (progress > 0) {
+				step = step * makeEaseOut(circ)((1 - progress) / 1);
+			}
+			iframe.contentWindow.scrollBy(0, step);
+		}
+	});
+
+	function isMaxScroll() {
+		return iframe.contentWindow.scrollY >= maxScroll - 1;
+	}
+
+	function isMinScroll() {
+		return iframe.contentWindow.scrollY == 0;
+	}
+}
+
+/* function runScroll(cursorSpeed) {
+	cursorSpeed = Math.min(cursorSpeed, 20);
 	let direction = scrollDirection > 0 ? 1 : -1;
 	let to = cursorSpeed * 3 * direction;
 
@@ -184,7 +223,7 @@ function runScroll(cursorSpeed) {
 	function isMinScroll() {
 		return iframe.contentWindow.scrollY == 0;
 	}
-}
+} */
 
 class Animate {
 	static lastAnimationId = 0;
