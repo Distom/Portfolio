@@ -11,6 +11,7 @@ let lastCursorY = 0;
 let cursorMonitoringFrequency = 17;
 let scrollDirection = 0;
 let lastScrollAnim = null;
+let isPointerDown = false;
 
 let startTouchChords = [0, 0];
 
@@ -69,6 +70,7 @@ function stopScrollAnimOnWheel() {
 function startTouch(event) {
 	lastScrollAnim?.stop();
 	if (checkIframeOverflow()) return;
+	isPointerDown = true;
 	startTouchChords = [event.clientX, event.clientY];
 
 	startScroll = iframe.contentWindow.scrollY;
@@ -95,6 +97,7 @@ function endTouch(event) {
 	if (cursorSpeed > 0.2 && !checkIframeOverflow()) {
 		lastScrollAnim = runScroll(cursorSpeed);
 	}
+	isPointerDown = false;
 	iframe.contentDocument.removeEventListener('pointermove', checkStartTouchScroll);
 	iframe.contentDocument.removeEventListener('pointermove', scrollIframe);
 }
@@ -104,9 +107,14 @@ function endTouchMode() {
 }
 
 function runCursorMonitoring(event) {
-	let distanceY = Math.abs(lastCursorY - event.clientY);
-	cursorSpeed = distanceY / cursorMonitoringFrequency;
-	scrollDirection = event.clientY - lastCursorY != 0 ? event.clientY - lastCursorY : scrollDirection;
+	if (!isPointerDown) {
+		cursorSpeed = 0;
+		scrollDirection = 0;
+	} else {
+		let distanceY = Math.abs(lastCursorY - event.clientY);
+		cursorSpeed = distanceY / cursorMonitoringFrequency;
+		scrollDirection = event.clientY - lastCursorY != 0 ? event.clientY - lastCursorY : scrollDirection;
+	}
 
 	lastCursorY = event.clientY;
 }

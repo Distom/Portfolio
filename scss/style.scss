@@ -213,6 +213,7 @@ input[type=checkbox]:focus-visible,
 		color: $textColor;
 		font-weight: 300;
 		font-size: 0.8rem;
+		width: fit-content;
 	}
 
 	&__email {
@@ -220,6 +221,7 @@ input[type=checkbox]:focus-visible,
 		font-weight: 300;
 		font-size: 0.8rem;
 		margin-bottom: 32px;
+		width: fit-content;
 	}
 
 	&__phone,

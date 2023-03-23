@@ -271,12 +271,16 @@ input[type=checkbox]:focus-visible,
   color: rgba(255, 255, 255, 0.65);
   font-weight: 300;
   font-size: 0.8rem;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .photo-block__email {
   color: rgba(255, 255, 255, 0.65);
   font-weight: 300;
   font-size: 0.8rem;
   margin-bottom: 32px;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .photo-block__phone, .photo-block__email {
   transition: color 0.3s;
