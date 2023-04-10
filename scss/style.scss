@@ -187,11 +187,11 @@ input[type=checkbox]:focus-visible,
 
 	&__name {
 		font-weight: 700;
-		font-size: 2rem;
+		font-size: 1.99rem;
 		line-height: 1.2;
 		/* 48/40 */
 		align-self: center;
-		margin-bottom: 32px;
+		margin-bottom: 16px;
 	}
 
 	&__profession {
@@ -237,7 +237,7 @@ input[type=checkbox]:focus-visible,
 	&__social-media-list {
 		display: flex;
 		gap: 16px;
-		justify-content: space-between;
+		justify-content: center;
 		margin-bottom: 32px;
 
 		@media (max-width: 700px) {
@@ -265,7 +265,7 @@ input[type=checkbox]:focus-visible,
 	}
 
 	&__social-media-icon {
-		transform: scaleY(1.05);
+		//transform: scaleY(1.05);
 		transition: fill 0.3s;
 
 		path {
