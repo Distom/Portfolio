@@ -179,10 +179,15 @@ input[type=checkbox]:focus-visible,
 		/* 250/494 */
 		align-self: center;
 		margin-bottom: 40px;
+		background: #fff;
+		border-radius: 16px;
+		overflow: hidden;
 	}
 
 	&__photo {
-		border-radius: 16px;
+
+		position: relative;
+		z-index: -10;
 	}
 
 	&__name {
@@ -190,8 +195,24 @@ input[type=checkbox]:focus-visible,
 		font-size: 1.99rem;
 		line-height: 1.2;
 		/* 48/40 */
-		align-self: center;
 		margin-bottom: 16px;
+		align-self: center;
+		margin-left: -25px;
+		margin-right: -25px;
+
+		@media (max-width: 1360px) {
+			align-self: flex-start;
+			margin-left: 0;
+			margin-right: 0;
+		}
+
+		@media (max-width: 700px) {
+			align-self: center;
+		}
+
+		@media (max-width: 400px) {
+			align-self: flex-start;
+		}
 	}
 
 	&__profession {
@@ -199,8 +220,20 @@ input[type=checkbox]:focus-visible,
 		/* 24px/20 */
 		line-height: 1.2;
 		/* 29px/24 */
-		align-self: center;
 		margin-bottom: 32px;
+		align-self: center;
+
+		@media (max-width: 1360px) {
+			align-self: flex-start;
+		}
+
+		@media (max-width: 700px) {
+			align-self: center;
+		}
+
+		@media (max-width: 400px) {
+			align-self: flex-start;
+		}
 	}
 
 	&__title {
@@ -292,6 +325,8 @@ input[type=checkbox]:focus-visible,
 	background: linear-gradient(163.36deg, $greenDark 0%, $greenLight 125%);
 	border-radius: 0px 10px 10px 0px;
 	padding: 43px 6%;
+	display: flex;
+	flex-direction: column;
 
 	@media (max-width: 900px) {
 		padding: 25px 15px;
@@ -374,12 +409,55 @@ input[type=checkbox]:focus-visible,
 		/* 19/16 */
 		text-transform: capitalize;
 		margin-bottom: 20px;
+	}
 
-		@media (max-width: 500px) {
-			margin-bottom: 40px;
+	&__resume-link-wrapper {
+		flex: 1 1 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__resume-link {
+		display: block;
+		width: 244px;
+		padding: 15px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		margin: 32px auto;
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 5px;
+		color: #fff;
+		font-size: 1.2rem;
+		line-height: 1.2;
+		transition: color 0.3s, background 0.3s;
+
+
+		&:hover {
+			background: rgba(255, 255, 255, 1);
+			color: $greenLight;
+
+			.text-block__resume-icon .st0 {
+				fill: $greenLight;
+			}
 		}
 	}
+
+	&__resume-icon {
+		transform: scale(1.2);
+
+		.st0 {
+			transition: fill 0.3s;
+			fill: #fff;
+		}
+	}
+
+	&__resume-text {}
 }
+
+.st0 {}
 
 //--------------------------------------
 

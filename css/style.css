@@ -242,25 +242,63 @@ input[type=checkbox]:focus-visible,
   /* 250/494 */
   align-self: center;
   margin-bottom: 40px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
 }
 .photo-block__photo {
-  border-radius: 16px;
+  position: relative;
+  z-index: -10;
 }
 .photo-block__name {
   font-weight: 700;
   font-size: 1.99rem;
   line-height: 1.2;
   /* 48/40 */
-  align-self: center;
   margin-bottom: 16px;
+  align-self: center;
+  margin-left: -25px;
+  margin-right: -25px;
+}
+@media (max-width: 1360px) {
+  .photo-block__name {
+    align-self: flex-start;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+@media (max-width: 700px) {
+  .photo-block__name {
+    align-self: center;
+  }
+}
+@media (max-width: 400px) {
+  .photo-block__name {
+    align-self: flex-start;
+  }
 }
 .photo-block__profession {
   font-size: 1.2rem;
   /* 24px/20 */
   line-height: 1.2;
   /* 29px/24 */
-  align-self: center;
   margin-bottom: 32px;
+  align-self: center;
+}
+@media (max-width: 1360px) {
+  .photo-block__profession {
+    align-self: flex-start;
+  }
+}
+@media (max-width: 700px) {
+  .photo-block__profession {
+    align-self: center;
+  }
+}
+@media (max-width: 400px) {
+  .photo-block__profession {
+    align-self: flex-start;
+  }
 }
 .photo-block__title {
   line-height: 1.2;
@@ -333,6 +371,8 @@ input[type=checkbox]:focus-visible,
   background: linear-gradient(163.36deg, #399988 0%, #599939 125%);
   border-radius: 0px 10px 10px 0px;
   padding: 43px 6%;
+  display: flex;
+  flex-direction: column;
 }
 @media (max-width: 900px) {
   .text-block {
@@ -407,12 +447,42 @@ input[type=checkbox]:focus-visible,
   text-transform: capitalize;
   margin-bottom: 20px;
 }
-@media (max-width: 500px) {
-  .text-block__organization {
-    margin-bottom: 40px;
-  }
+.text-block__resume-link-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
+.text-block__resume-link {
+  display: block;
+  width: 244px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 32px auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  transition: color 0.3s, background 0.3s;
+}
+.text-block__resume-link:hover {
+  background: rgb(255, 255, 255);
+  color: #599939;
+}
+.text-block__resume-link:hover .text-block__resume-icon .st0 {
+  fill: #599939;
+}
+.text-block__resume-icon {
+  transform: scale(1.2);
+}
+.text-block__resume-icon .st0 {
+  transition: fill 0.3s;
+  fill: #fff;
+}
 .markup {
   -webkit-user-select: none;
      -moz-user-select: none;
