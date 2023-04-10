@@ -446,7 +446,6 @@ input[type=checkbox]:focus-visible,
 	}
 
 	&__resume-icon {
-		transform: scale(1.2);
 
 		.st0 {
 			transition: fill 0.3s;
@@ -1203,6 +1202,7 @@ input[type=checkbox]:focus-visible,
 
 .footer {
 	text-align: center;
+	min-height: 32px;
 
 	&__container {}
 }

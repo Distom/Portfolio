@@ -476,9 +476,6 @@ input[type=checkbox]:focus-visible,
 .text-block__resume-link:hover .text-block__resume-icon .st0 {
   fill: #599939;
 }
-.text-block__resume-icon {
-  transform: scale(1.2);
-}
 .text-block__resume-icon .st0 {
   transition: fill 0.3s;
   fill: #fff;
@@ -1105,6 +1102,7 @@ input[type=checkbox]:focus-visible,
 
 .footer {
   text-align: center;
+  min-height: 32px;
 }
 [hidden] {
   display: none;
