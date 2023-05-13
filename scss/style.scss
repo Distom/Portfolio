@@ -1049,14 +1049,15 @@ input[type=checkbox]:focus-visible,
 			display: none;
 			padding: 0 40% 40% 0;
 			position: absolute;
-			top: 35px;
-			left: -30px;
+			top: 50%;
+			left: -50%;
+			transform: translate(-50%, -50%);
 			transition: transform 0.3s;
 
 			&:hover,
 			&:focus-visible {
 				opacity: 0.7;
-				transform: rotate(-30deg);
+				transform: translate(-50%, -50%) rotate(-30deg);
 			}
 		}
 
