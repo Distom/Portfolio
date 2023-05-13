@@ -130,6 +130,7 @@ body {
 
 ._bgi {
   position: relative;
+  display: block;
 }
 ._bgi [class*=_bgi-image] {
   position: absolute;
@@ -204,11 +205,14 @@ input[type=checkbox]:focus-visible,
 .resume {
   color: #fff;
 }
-.resume__container {
+.resume__card {
   display: flex;
+  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
 }
 @media (max-width: 700px) {
-  .resume__container {
+  .resume__card {
     flex-direction: column;
   }
 }
@@ -221,7 +225,6 @@ input[type=checkbox]:focus-visible,
 
 .photo-block {
   background: linear-gradient(149.39deg, rgba(34, 34, 34, 0.22) 0%, rgba(255, 255, 255, 0) 100%, #111111 100%), rgba(255, 255, 255, 0.1);
-  border-radius: 10px 0px 0px 10px;
   display: flex;
   flex-direction: column;
   padding: 50px 5%;
@@ -369,7 +372,6 @@ input[type=checkbox]:focus-visible,
 
 .text-block {
   background: linear-gradient(163.36deg, #399988 0%, #599939 125%);
-  border-radius: 0px 10px 10px 0px;
   padding: 43px 6%;
   display: flex;
   flex-direction: column;
@@ -571,10 +573,11 @@ input[type=checkbox]:focus-visible,
 .markup__card {
   display: block;
   flex: 0 1 calc(33.33% - 10px);
-  padding: 2%;
-  /* 26/1300 */
-  background: rgba(255, 255, 255, 0.1);
   box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+.markup__card .card__image-wrapper {
+  padding: 0 0 160% 0;
   border-radius: 10px;
 }
 @media (max-width: 1000px) {
@@ -642,10 +645,11 @@ input[type=checkbox]:focus-visible,
 .card {
   position: relative;
   z-index: 0;
+  padding: 2%;
+  /* 26/1300 */
+  background: rgba(255, 255, 255, 0.1);
 }
 .card__image-wrapper {
-  padding: 0 0 160% 0;
-  border-radius: 10px;
   overflow: hidden;
   transition: filter 1s;
 }
@@ -1094,6 +1098,53 @@ input[type=checkbox]:focus-visible,
           backdrop-filter: blur(4px);
 }
 
+.javaScript__card {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.javaScript-card {
+  color: #fff;
+}
+.javaScript-card__image-block {
+  padding-bottom: 0;
+}
+.javaScript-card__image-block .card__content {
+  gap: 32px;
+}
+.javaScript-card__image-block .card__image-wrapper {
+  padding: 0 0 300px 0;
+  overflow: hidden;
+}
+.javaScript-card__image-block .card__image {
+  -o-object-position: top left;
+     object-position: top left;
+}
+.javaScript-card__image-block .card__technologies {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+@media (max-width: 750px) {
+  .javaScript-card__image-block .card__technologies {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+.javaScript-card__image-block .card__technology {
+  gap: 5px;
+}
+.javaScript-card__image-block .card__image-wrapper, .javaScript-card__image-block::before {
+  border-radius: 10px 10px 0 0;
+}
+.javaScript-card__image-block:hover .card__image, .javaScript-card__image-block:focus-within .card__image {
+  opacity: 0.6;
+  filter: hue-rotate(var(--rotate)) blur(2px) contrast(75%);
+}
 .react {
   position: absolute;
   top: 0;

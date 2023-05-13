@@ -19,7 +19,7 @@ let routes = {
     scriptLinks: [
       "/js/touch-control.js",
       "/js/preview-mode.js",
-      "/js/global.js",
+      "/js/markup-final.js",
     ],
     scriptsAdded: false,
   },
@@ -28,7 +28,7 @@ let routes = {
     cacheHTML: null,
   },
   "/javaScript": {
-    route: "/pages/react.html",
+    route: "/pages/javaScript.html",
     cacheHTML: null,
   },
 };

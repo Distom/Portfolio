@@ -1,14 +1,21 @@
-'use strict'
+'use strict';
 
-window.addEventListener('resize', onResize);
+let rotatePropertyInterval;
 
-function onResize() {
-	if (previewOn) {
-		setCenterCard(document.querySelector('.card_active'));
-
-		if (!checkScreenSize()) {
-			showModal('Your screen size is not large enough to use the preview mode.');
-			endPreviewMode();
-		}
-	}
+function runRotateProperty() {
+  let deg = 0;
+  let step = 2;
+  rotatePropertyInterval = setInterval(() => {
+    requestAnimationFrame(() => {
+      if (deg < -360 || deg > 360) {
+        step *= -1;
+      }
+      document.documentElement.style.setProperty(
+        '--rotate',
+        `${(deg += step)}deg`
+      );
+    });
+  }, 20);
 }
+
+runRotateProperty();
