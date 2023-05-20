@@ -482,6 +482,46 @@ input[type=checkbox]:focus-visible,
   transition: fill 0.3s;
   fill: #fff;
 }
+.text-block__list {
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.8rem;
+  margin-bottom: 32px;
+}
+.text-block__list-item {
+  position: relative;
+}
+.text-block__list-item::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  position: absolute;
+  top: calc((24px - 0.6rem) / 2);
+  left: -23px;
+  background: url("../img/markerEmpty.svg") 0 0 no-repeat;
+  background-size: cover;
+  z-index: 100;
+}
+.text-block__list_sublist {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+.text-block__list_sublist .text-block__list-item::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  position: absolute;
+  top: calc((24px - 0.6rem) / 2);
+  left: -23px;
+  background: url("../img/markerFull.svg") 0 0 no-repeat;
+  background-size: cover;
+  z-index: 100;
+}
+.text-block__list-item {
+  margin-left: 32px;
+  margin-bottom: 10px;
+}
+
 .markup {
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -1099,6 +1139,11 @@ input[type=checkbox]:focus-visible,
           backdrop-filter: blur(4px);
 }
 
+.javaScript__container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
 .javaScript__card {
   display: flex;
   flex-direction: column;

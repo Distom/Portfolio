@@ -1,6 +1,6 @@
 <section class="javaScript" data-tab-body="javaScript">
-	<div class="javaScript__container">
-		<div class="javaScript__card javaScript-card">
+	<ul class="javaScript__container">
+		<li class="javaScript__card javaScript-card">
 			<div class="javaScript-card__image-block card">
 				<picture class="card__image-wrapper _bgi">
 					<source srcset="img/javaScript/webExcel3.jpg" media="(max-width: 700px)">
@@ -23,13 +23,13 @@
 								<img class="card__technology-logo" src="img/technologies/javaScript.svg" alt="javaScript logo">
 								<span class="card__technology-title">JavaScript</span>
 							</li>
-							<!-- <li class="card__technology">
-								<img class="card__technology-logo" src="img/technologies/firebase.svg" alt="Firebase logo">
-								<span class="card__technology-title">Firebase</span>
-							</li> -->
 							<li class="card__technology">
 								<img class="card__technology-logo" src="img/technologies/webpack.svg" alt="WebPack logo">
 								<span class="card__technology-title">WebPack</span>
+							</li>
+							<li class="card__technology">
+								<img class="card__technology-logo" src="img/technologies/jest.svg" alt="Jest logo">
+								<span class="card__technology-title">Jest</span>
 							</li>
 						</ul>
 					</div>
@@ -41,22 +41,219 @@
 			</div>
 			<div class="javaScript-card__text-block text-block">
 				<h2 class="text-block__title text-block__title_big">WebExcel</h2>
-				<p class="text-block__about-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente praesentium
-					ex
-					explicabo exercitationem ratione ut non, placeat minus, sit ducimus molestias in, magnam animi error
-					repellendus? Excepturi officia laborum soluta?</p>
-				<p class="text-block__about-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente praesentium
-					ex
-					explicabo exercitationem ratione ut non, placeat minus, sit ducimus molestias in, magnam animi error
-					repellendus? Excepturi officia laborum soluta? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-					Possimus aliquid dicta nisi numquam dolores ex. Est sequi et rerum dolores minima inventore unde consequatur
-					fugiat, magnam saepe, molestiae temporibus vel.
+				<h3 class="text-block__title">About</h3>
+				<p class="text-block__about-text">
+					SPA analogue of Google Sheets. The layout is made by myself. The application is written in pure JavaScript.
+					During the
+					implementation of the project, analogues of Redux, small library for manipulating the DOM and a small
+					framework for Excel components were written. At
+					the moment there is only a desktop version and not all the planned functionality has been implemented, but the
+					main part
+					of the application has been implemented. The code is written with an object-oriented approach, procedural and
+					functional
+					approaches are also used.
 				</p>
-				<p class="text-block__about-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente praesentium
-					ex
-					explicabo exercitationem ratione ut non, placeat minus, sit ducimus molestias in, magnam animi error
-					repellendus? Excepturi officia laborum soluta?</p>
+
+				<h3 class="text-block__title">Functionality</h3>
+				<ul class="text-block__list">
+					<li class="text-block__list-item">
+						creating and deleting user tables
+					</li>
+					<li class="text-block__list-item">
+						table name change
+					</li>
+					<li class="text-block__list-item">
+						resizing rows and columns
+					</li>
+					<li class="text-block__list-item">
+						changing cell styles
+					</li>
+					<li class="text-block__list-item">
+						changing the styles of the selected parts of the text inside the cells (this functionality is not finished
+						yet and may
+						not always work correctly)
+					</li>
+					<li class="text-block__list-item">
+						selection of a group of cells
+					</li>
+					<li class="text-block__list-item">
+						copying the values of the selected cell or group of cells by dragging the slider in the lower right corner
+						of the
+						selection
+					</li>
+					<li class="text-block__list-item">
+						creating calculated values in cells. To do this, use a line like '=(A10 * E2) + C5' (recalculation of the
+						values of cells
+						dependent on each other after changing the value of any of them has not yet been implemented)
+					</li>
+					<li class="text-block__list-item">
+						keyboard control similar to Google Sheets
+					</li>
+				</ul>
+
+				<h3 class="text-block__title">Details</h3>
+				<ul class="text-block__list">
+					<li class="text-block__list-item">
+						created a core for writing an application
+						<ul class="text-block__list text-block__list_sublist">
+							<li class="text-block__list-item">
+								Emitter class for handling custom events
+							</li>
+							<li class="text-block__list-item">
+								DomListener class is responsible for handling native component events
+							</li>
+							<li class="text-block__list-item">
+								ExcelComponent class inherits from DomListener and is responsible for initializing and deleting the
+								component, as
+								well as for working with Emitter's events and working with the Redux store analogue. This is the base
+								class for
+								Excel components
+							</li>
+							<li class="text-block__list-item">
+								ExcelStateComponent class inherits from ExcelComponent and adds internal state to the component. This is
+								the base
+								class for stateful Excel components
+							</li>
+							<li class="text-block__list-item">
+								Page class is the interface of the application's page classes
+							</li>
+							<li class="text-block__list-item">
+								Router class is responsible for page routing uses History API
+							</li>
+							<li class="text-block__list-item">
+								a library was written to simplify working with the DOM
+							</li>
+						</ul>
+					</li>
+					<li class="text-block__list-item">
+						an analogue of Redux was written
+					</li>
+					<li class="text-block__list-item">
+						Storage class was written to work with LocalStorage. User-created tables are stored in LocalStorage
+					</li>
+					<li class="text-block__list-item">
+						written Excel component class responsible for initializing and destroying all Excel components, creating a
+						common store
+						and emitter
+					</li>
+					<li class="text-block__list-item">
+						Excel component classes are written. Header, Toolbar, Formula, Table classes and their inner classes. For
+						example inner
+						classes for Table class are Resizer, Selection, MathParser and other classes
+					</li>
+					<li class="text-block__list-item">
+						ExcelPage and DashbordPage classes for application pages are written
+					</li>
+					<li class="text-block__list-item">
+						JEST framework was used to write unit tests
+					</li>
+					<li class="text-block__list-item">
+						code style is maintained by Eslint with Airbnb Style Guide and Prettier
+					</li>
+					<li class="text-block__list-item">
+						Webpack is used to build the project (Babel, image compression, SCSS preprocessing)
+					</li>
+				</ul>
 			</div>
-		</div>
-	</div>
+		</li>
+		<li class="javaScript__card javaScript-card">
+			<div class="javaScript-card__image-block card">
+				<picture class="card__image-wrapper _bgi">
+					<source srcset="img/javaScript/funiro3.jpg" media="(max-width: 700px)">
+					<source srcset="img/javaScript/funiro2.jpg" media="(max-width: 1000px)">
+					<img src="img/javaScript/funiro.jpg" alt="funiro screenshot" class="card__image _bgi-image">
+
+				</picture>
+				<div class="card__content">
+					<div class="card__description">
+						<ul class="card__technologies">
+							<li class="card__technology">
+								<img class="card__technology-logo" src="img/technologies/html.svg" alt="html logo">
+								<span class="card__technology-title">HTML</span>
+							</li>
+							<li class="card__technology">
+								<img class="card__technology-logo" src="img/technologies/scss.svg" alt="scss logo">
+								<span class="card__technology-title">SCSS</span>
+							</li>
+							<li class="card__technology">
+								<img class="card__technology-logo" src="img/technologies/javaScript.svg" alt="javaScript logo">
+								<span class="card__technology-title">JavaScript</span>
+							</li>
+							<li class="card__technology">
+								<img class="card__technology-logo" src="img/technologies/firebase.svg" alt="Firebase logo">
+								<span class="card__technology-title">Firebase</span>
+							</li>
+							<li class="card__technology">
+								<img class="card__technology-logo" src="img/technologies/webpack.svg" alt="WebPack logo">
+								<span class="card__technology-title">WebPack</span>
+							</li>
+						</ul>
+					</div>
+					<div class="card__buttons">
+						<a href="https://distom.github.io/Funiro/dist/" class="card__button  card__button_open"
+							target="_blank">Open</a>
+					</div>
+				</div>
+			</div>
+			<div class="javaScript-card__text-block text-block">
+				<h2 class="text-block__title text-block__title_big">Funiro</h2>
+				<h3 class="text-block__title">About</h3>
+				<p class="text-block__about-text">
+					A one-page online store with a shopping cart, favorites and authorization. The layout is made by myself and
+					adapted to
+					any screen size. Ready-made solutions such as Firebase, Swiper.js and lightGallery were used. The code uses
+					procedural
+					and object-oriented approaches
+				</p>
+
+				<h3 class="text-block__title">Details</h3>
+				<ul class="text-block__list">
+					<li class="text-block__list-item">
+						user authorization with Firebase Authentication
+					</li>
+					<li class="text-block__list-item">
+						dynamic loading of products in the products section, cart and favorites from Firestore Database and images
+						for products
+						from Firebase Storage
+					</li>
+					<li class="text-block__list-item">
+						only authorized users have access to the cart and the state of the user's cart is stored in the Firestore
+						Database
+					</li>
+					<li class="text-block__list-item">
+						all users have access to favorites and the state of favorites is saved in LocaleStorage
+					</li>
+					<li class="text-block__list-item">
+						Window class was created for the authorization window, mobile search and menu burger that allows you to hide
+						and show
+						windows, as well as hide already open windows when opening a new one
+					</li>
+					<li class="text-block__list-item">
+						the WindowList class was created for shopping cart and favorites. It inherits from Window and allows you to
+						monitor
+						the state of the list using MutationObserver. If the list is empty, show the corresponding text
+					</li>
+					<li class="text-block__list-item">
+						three sliders implemented with Swiper.js
+					</li>
+					<li class="text-block__list-item">
+						implemented animation of image gallery movement depending on the position of the mouse cursor. Image
+						browsing
+						implemented with lightGallery
+					</li>
+					<li class="text-block__list-item">
+						implemented submenu display on hover for non-touch screen devices and on tap for touch screen devices, as
+						well as a
+						burger menu for devices with small screens
+					</li>
+					<li class="text-block__list-item">
+						drop-down menus implemented in the burger menu and footer
+					</li>
+					<li class="text-block__list-item">
+						Webpack is used to build the project (Babel, image compression, SCSS preprocessing)
+					</li>
+				</ul>
+			</div>
+		</li>
+	</ul>
 </section>

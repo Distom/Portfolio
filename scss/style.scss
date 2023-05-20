@@ -458,6 +458,56 @@ input[type=checkbox]:focus-visible,
 	}
 
 	&__resume-text {}
+
+	//----------------------------------------------
+
+	&__list {
+		font-weight: 300;
+		color: $textColor;
+		font-size: 0.8rem;
+		margin-bottom: 32px;
+
+		&-item {
+			position: relative;
+
+			&::before {
+				content: '';
+				width: 0.6rem;
+				height: 0.6rem;
+				position: absolute;
+				top: calc((24px - 0.6rem) / 2);
+				left: -23px;
+				background: url('../img/markerEmpty.svg') 0 0 no-repeat;
+				background-size: cover;
+				z-index: 100;
+			}
+		}
+
+
+		&_sublist {
+			margin-bottom: 0;
+			margin-top: 10px;
+
+			.text-block__list-item {
+				&::before {
+					content: '';
+					width: 0.6rem;
+					height: 0.6rem;
+					position: absolute;
+					top: calc((24px - 0.6rem) / 2);
+					left: -23px;
+					background: url('../img/markerFull.svg') 0 0 no-repeat;
+					background-size: cover;
+					z-index: 100;
+				}
+			}
+		}
+	}
+
+	&__list-item {
+		margin-left: 32px;
+		margin-bottom: 10px;
+	}
 }
 
 .st0 {}
@@ -1209,7 +1259,11 @@ input[type=checkbox]:focus-visible,
 //---------------------------------------
 
 .javaScript {
-	&__container {}
+	&__container {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
 
 	&__card {
 		display: flex;
